@@ -24,7 +24,7 @@ AMainPlayer::AMainPlayer()
 	// Attaching Visual and camera to Root
 	VisualMesh->SetupAttachment(RootComponent);
 	CameraComponent->SetupAttachment(RootComponent);
-	CameraComponent->SetRelativeLocation(FVector(-1000.0f, 0.0f, 1000.0f));
+	CameraComponent->SetRelativeLocation(FVector(-750.0f, 0.0f, 750.0f));
 	CameraComponent->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
 
 }
