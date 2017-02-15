@@ -1,0 +1,8 @@
+*Binaries
+*Build
+*Intermediate
+*Saved
+
+*.VC.db
+*.db
+*.sln
