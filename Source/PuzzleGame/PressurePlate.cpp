@@ -2,6 +2,7 @@
 
 #include "PuzzleGame.h"
 #include "PressurePlate.h"
+#include "Door.h"
 
 
 // Sets default values
@@ -19,6 +20,8 @@ APressurePlate::APressurePlate()
 	// Create TriggerVolume
 	CollisionBox = CreateDefaultSubobject<ATriggerVolume>(TEXT("Collision Box"));
 
+
+
 }
 
 // Called when the game starts or when spawned
@@ -35,7 +38,11 @@ void APressurePlate::Tick(float DeltaTime)
 
 	if (CollisionBox->IsOverlappingActor(ObjectThatActivates))
 	{
-		
+		Cast<ADoor>(DoorThatOpens)->OpenDoor();
+	}
+	else
+	{
+		Cast<ADoor>(DoorThatOpens)->CloseDoor();
 	}
 
 }
