@@ -9,23 +9,12 @@ AMainPlayer::AMainPlayer()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	// Possesing controlls
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
-	// Create Rootcomponent
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
+	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
 
-	// Creating Mesh Object
-	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Visual Mesh Component"));
-
-	// Creating Camera Component
-	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Component"));
-
-	// Attaching Visual and camera to Root
-	VisualMesh->SetupAttachment(RootComponent);
-	CameraComponent->SetupAttachment(RootComponent);
-	CameraComponent->SetRelativeLocation(FVector(-750.0f, 0.0f, 750.0f));
-	CameraComponent->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+	CameraBoom->SetupAttachment(RootComponent);
+	PlayerCamera->SetupAttachment(CameraBoom);
 
 }
 
@@ -41,11 +30,6 @@ void AMainPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (!Movement.IsZero())
-	{
-		FVector Location = GetActorLocation() + (Movement * DeltaTime);
-		SetActorLocation(Location);
-	}
 
 }
 
@@ -67,12 +51,12 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 void AMainPlayer::MoveX(float AxisValue)
 {
-	Movement.X = FMath::Clamp(AxisValue, -1.0f, 1.0f) * Speed;
+	AddMovementInput(FVector::ForwardVector, AxisValue);
 }
 
 void AMainPlayer::MoveY(float AxisValue)
 {
-	Movement.Y = FMath::Clamp(AxisValue, -1.0f, 1.0f) * Speed;
+	AddMovementInput(FVector::RightVector, AxisValue);
 }
 
 void AMainPlayer::Climb()
@@ -80,6 +64,10 @@ void AMainPlayer::Climb()
 }
 
 void AMainPlayer::Interact()
+{
+}
+
+void AMainPlayer::RotateTowardsMouse(float DeltaTime)
 {
 }
 

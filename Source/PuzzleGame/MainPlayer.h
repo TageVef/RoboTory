@@ -10,10 +10,6 @@ class PUZZLEGAME_API AMainPlayer : public ACharacter
 {
 	GENERATED_BODY()
 
-	float Speed{ 800.0f };
-
-	FVector Movement;
-
 public:
 	// Sets default values for this character's properties
 	AMainPlayer();
@@ -29,11 +25,13 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* VisualMesh;
+private:
 
-	UPROPERTY(EditAnywhere)
-		UCameraComponent* CameraComponent;
+	UPROPERTY(VisibleAnywhere)
+		USpringArmComponent* CameraBoom = nullptr;
+
+	UPROPERTY(VisibleAnywhere)
+		UCameraComponent* PlayerCamera = nullptr;
 
 	void MoveX(float AxisValue);
 
@@ -42,6 +40,8 @@ public:
 	void Climb();
 
 	void Interact();
+
+	void RotateTowardsMouse(float DeltaTime);
 
 	
 	
