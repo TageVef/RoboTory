@@ -33,6 +33,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		UCameraComponent* PlayerCamera = nullptr;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UDecalComponent* CursorToWorld;
+
 	void MoveX(float AxisValue);
 
 	void MoveY(float AxisValue);
@@ -41,7 +44,14 @@ private:
 
 	void Interact();
 
-	void RotateTowardsMouse(float DeltaTime);
+	void RotateTowardsMouse(float DeltaTime, float XPos, float YPos);
+
+	float XPosition;
+	float YPosition;
+	
+	UPROPERTY(EditAnywhere)
+		float RotateSpeed = 350.f;
+
 
 	
 	

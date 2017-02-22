@@ -7,7 +7,7 @@
 // Sets default values
 AMainPlayer::AMainPlayer()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
@@ -15,14 +15,16 @@ AMainPlayer::AMainPlayer()
 
 	CameraBoom->SetupAttachment(RootComponent);
 	PlayerCamera->SetupAttachment(CameraBoom);
-
 }
 
 // Called when the game starts or when spawned
 void AMainPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	// Shows mouse cursor so you see where you aim (rotate)
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+
 }
 
 // Called every frame
@@ -30,6 +32,7 @@ void AMainPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	RotateTowardsMouse(DeltaTime, XPosition, YPosition);
 
 }
 
@@ -67,7 +70,26 @@ void AMainPlayer::Interact()
 {
 }
 
-void AMainPlayer::RotateTowardsMouse(float DeltaTime)
+void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 {
+
+	// Find mouse position and put the result in a 2D vector
+	GetWorld()->GetFirstPlayerController()->GetMousePosition(XPos, YPos);
+	FVector2D MouseLocation = FVector2D(XPos, YPos);
+
+	// Find the viewport centre
+	const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
+	const FVector2D  ViewportCenter = FVector2D(ViewportSize.X / 2, ViewportSize.Y / 2);
+
+	// Find the vector between viewport centre and mouse cursor
+	FVector2D MouseDirection = MouseLocation - ViewportCenter;
+	FVector RotationAngle = FVector(MouseDirection.X, MouseDirection.Y, 0);
+
+	// Find the new rotation
+	FRotator NewRotation = FMath::RInterpConstantTo(GetActorRotation(), RotationAngle.Rotation(), DeltaTime, RotateSpeed);
+
+	//Rotate towards mouse cursor
+	GetWorld()->GetFirstPlayerController()->SetControlRotation(NewRotation);
+
 }
 
