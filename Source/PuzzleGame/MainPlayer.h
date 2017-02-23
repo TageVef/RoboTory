@@ -25,6 +25,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
 private:
 
 	UPROPERTY(VisibleAnywhere)
@@ -35,6 +36,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UDecalComponent* CursorToWorld;
+
+	UPROPERTY(EditAnywhere, Category = "Grapplehook")
+		TSubclassOf<class AGrapplehook> GrapplehookBlueprint;
+
+	UPROPERTY(VisibleAnywhere)
+		TSubclassOf<class AMovableObject> DragBox;
 
 	void MoveX(float AxisValue);
 
@@ -51,6 +58,8 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 		float RotateSpeed = 350.f;
+
+	void Shoot();
 
 
 	

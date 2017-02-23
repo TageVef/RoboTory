@@ -2,6 +2,8 @@
 
 #include "PuzzleGame.h"
 #include "MainPlayer.h"
+#include "Grapplehook.h"
+#include "MovableObject.h"
 
 
 // Sets default values
@@ -15,6 +17,11 @@ AMainPlayer::AMainPlayer()
 
 	CameraBoom->SetupAttachment(RootComponent);
 	PlayerCamera->SetupAttachment(CameraBoom);
+	
+	// AMovableObject* box = DragBox.GetDefaultObject();
+
+	
+	// bool hit = AMovableObject::box.GetHit();
 }
 
 // Called when the game starts or when spawned
@@ -44,6 +51,7 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	// Setting up Action bindings
 	InputComponent->BindAction("Climb", IE_Pressed, this, &AMainPlayer::Climb);
 	InputComponent->BindAction("Interact", IE_Pressed, this, &AMainPlayer::Interact);
+	InputComponent->BindAction("Shoot", IE_Pressed, this, &AMainPlayer::Shoot);
 
 	//Settign up Axis bindings
 	InputComponent->BindAxis("MoveX", this, &AMainPlayer::MoveX);
@@ -70,6 +78,8 @@ void AMainPlayer::Interact()
 {
 }
 
+
+// Dont think the character is rotating correctly. The right side somehow becomes the front side.
 void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 {
 
@@ -91,5 +101,20 @@ void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 	//Rotate towards mouse cursor
 	GetWorld()->GetFirstPlayerController()->SetControlRotation(NewRotation);
 
+}
+
+void AMainPlayer::Shoot()
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		// There is a problem somewhere, character is shooting from the right side, not the front side.
+		// Probably something wrong in the RotateTowardsMouse() function.
+		FVector Location = GetActorLocation() +(GetActorRightVector() * 100.f);
+		FRotator Rotation = GetActorRotation();
+
+		World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);
+	}
+	
 }
 
