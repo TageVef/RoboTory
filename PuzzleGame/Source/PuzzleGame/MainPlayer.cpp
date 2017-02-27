@@ -17,11 +17,12 @@ AMainPlayer::AMainPlayer()
 
 	CameraBoom->SetupAttachment(RootComponent);
 	PlayerCamera->SetupAttachment(CameraBoom);
-	
-	// AMovableObject* box = DragBox.GetDefaultObject();
 
+	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
 	
-	// bool hit = AMovableObject::box.GetHit();
+	//CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collision Box"));
+	//CapsuleComponent->bGenerateOverlapEvents = true;
+	//CapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &AMainPlayer::OnOverlap);
 }
 
 // Called when the game starts or when spawned
@@ -39,7 +40,7 @@ void AMainPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	RotateTowardsMouse(DeltaTime, XPosition, YPosition);
+		RotateTowardsMouse(DeltaTime, XPosition, YPosition);
 
 }
 
@@ -51,6 +52,7 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	// Setting up Action bindings
 	InputComponent->BindAction("Climb", IE_Pressed, this, &AMainPlayer::Climb);
 	InputComponent->BindAction("Interact", IE_Pressed, this, &AMainPlayer::Interact);
+	InputComponent->BindAction("Interact", IE_Released, this, &AMainPlayer::Interact);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &AMainPlayer::Shoot);
 
 	//Settign up Axis bindings
@@ -63,23 +65,43 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 void AMainPlayer::MoveX(float AxisValue)
 {
 	AddMovementInput(FVector::ForwardVector, AxisValue);
+	if (MovableObject && Holding)
+	{
+		Cast<AMovableObject>(MovableObject)->MoveObject(GetActorForwardVector() * WalkingSpeed);
+	}
 }
 
 void AMainPlayer::MoveY(float AxisValue)
 {
 	AddMovementInput(FVector::RightVector, AxisValue);
+
+		if (MovableObject && Holding)
+		{
+			Cast<AMovableObject>(MovableObject)->MoveObject(GetActorRightVector() * WalkingSpeed);
+		}
 }
 
 void AMainPlayer::Climb()
 {
+
 }
 
 void AMainPlayer::Interact()
 {
+	Holding = !Holding;
+}
+
+void AMainPlayer::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep,
+	const FHitResult &Sweepresult)
+{
+	if (OtherActor->IsA(AMovableObject::StaticClass()))
+	{
+		MovableObject = OtherActor;
+	}
 }
 
 
-// Dont think the character is rotating correctly. The right side somehow becomes the front side.
 void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 {
 
@@ -95,8 +117,15 @@ void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 	FVector2D MouseDirection = MouseLocation - ViewportCenter;
 	FVector RotationAngle = FVector(MouseDirection.X, MouseDirection.Y, 0);
 
+	FRotator RotationOffset = FRotator(0.f, 90.f, 0.f);
+	FRotationMatrix RotationMatrix(RotationOffset);
+	FVector MyVector = RotationMatrix.TransformVector(RotationAngle);
+
+	
+
+
 	// Find the new rotation
-	FRotator NewRotation = FMath::RInterpConstantTo(GetActorRotation(), RotationAngle.Rotation(), DeltaTime, RotateSpeed);
+	FRotator NewRotation = FMath::RInterpConstantTo(GetActorRotation(), MyVector.Rotation(), DeltaTime, RotateSpeed);
 
 	//Rotate towards mouse cursor
 	GetWorld()->GetFirstPlayerController()->SetControlRotation(NewRotation);
@@ -110,7 +139,7 @@ void AMainPlayer::Shoot()
 	{
 		// There is a problem somewhere, character is shooting from the right side, not the front side.
 		// Probably something wrong in the RotateTowardsMouse() function.
-		FVector Location = GetActorLocation() +(GetActorRightVector() * 100.f);
+		FVector Location = GetActorLocation() +(GetActorForwardVector() * 100.f);
 		FRotator Rotation = GetActorRotation();
 
 		World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);

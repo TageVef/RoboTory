@@ -33,13 +33,31 @@ void AGrapplehook::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector NewLocation = GetActorLocation();
+	NewLocation = GetActorLocation();
 
-	// There is a problem somewhere, character is shooting from the right side, not the front.
-	// Probably something wrong in the RotateTowardsMouse() function.
-	NewLocation += GetActorRightVector() * Speed * DeltaTime;
+	Movement = GetActorForwardVector() * Speed * DeltaTime;
+
+	if (!HitBox)
+	{
+		NewLocation += Movement;
+		DespawnTime -= DeltaTime;
+	}
+	else if (HitBox)
+	{
+		if (Cast<AMovableObject>(HitBox)->bHit)
+		{
+			NewLocation -= Movement;
+			Cast<AMovableObject>(HitBox)->MoveObject(Movement);
+			DespawnTime += DeltaTime;
+		}
+	}
+	if (DespawnTime > 0.5f)
+	{
+		Cast<AMovableObject>(HitBox)->bHit = false;
+		Destroy();
+	}
+
 	SetActorLocation(NewLocation, false);
-	DespawnTime -= DeltaTime;
 
 	if (DespawnTime < 0)
 	{
@@ -56,12 +74,17 @@ void AGrapplehook::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 	
 	if (OtherActor->IsA(AMovableObject::StaticClass()))
 	{
-		AMovableObject* HitBox = Cast<AMovableObject>(OtherActor);
-		
+		HitBox = OtherActor;
 		UE_LOG(LogTemp, Warning, TEXT("Den traff"))
-		HitBox->SetHit(true);
-		HitBox->SetEndLocation(StartLocation);
-
-		this->Destroy();
+			Cast<AMovableObject>(HitBox)->SetHit(true);
+		FVector Offset = GetActorLocation() + (GetActorForwardVector() * 50.0f);
+		OtherActor->SetActorLocation(Offset);
+		// HitBox->SetEndLocation(StartLocation);
+		// HitBox->MoveObject(NewLocation);
+	}
+	if (OtherActor->IsA(AMainPlayer::StaticClass()))
+	{
+		Cast<AMovableObject>(HitBox)->bHit = false;
+		Destroy();
 	}
 }

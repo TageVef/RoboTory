@@ -14,8 +14,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* DoorMesh;
-	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* DoorFrameMesh;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -28,6 +26,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	FVector StarterLocation;
+	FVector Movement = FVector(0, 0, 0);
 
 	void OpenDoor();
 

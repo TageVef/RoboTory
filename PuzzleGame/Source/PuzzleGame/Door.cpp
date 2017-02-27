@@ -10,6 +10,7 @@ ADoor::ADoor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door Mesh"));
 }
 
 // Called when the game starts or when spawned
@@ -24,15 +25,21 @@ void ADoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FVector Location = GetActorLocation() + (Movement * DeltaTime);
+
+	Location.Z = FMath::Clamp(Location.Z, StarterLocation.Z, StarterLocation.Z + 200.0f);
+
+	SetActorLocation(Location);
+
 }
 
 void ADoor::OpenDoor()
 {
-	// Code for opening the door
+	Movement = GetActorUpVector() * 200.0f;
 }
 
 void ADoor::CloseDoor()
 {
-	// Code for closing the door
+	Movement = GetActorUpVector() * -200.0f;
 }
 

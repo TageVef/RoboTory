@@ -36,4 +36,6 @@ public:
 	void SetHit(bool asdf);
 	
 	void SetEndLocation(FVector Location);
+
+	void MoveObject(FVector DirectionSpeed);
 };

@@ -31,6 +31,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		USpringArmComponent* CameraBoom = nullptr;
 
+	//UPROPERTY(VisibleAnywhere)
+	//	UCapsuleComponent* CapsuleComponent;
+
 	UPROPERTY(VisibleAnywhere)
 		UCameraComponent* PlayerCamera = nullptr;
 
@@ -43,6 +46,11 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		TSubclassOf<class AMovableObject> DragBox;
 
+	UFUNCTION()
+		void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+			UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep,
+			const FHitResult &Sweepresult);
+
 	void MoveX(float AxisValue);
 
 	void MoveY(float AxisValue);
@@ -53,8 +61,12 @@ private:
 
 	void RotateTowardsMouse(float DeltaTime, float XPos, float YPos);
 
+	AActor* MovableObject = nullptr;
 	float XPosition;
 	float YPosition;
+	float WalkingSpeed = 800.f;
+	FVector WalkingVector = GetActorForwardVector() * (WalkingSpeed);
+	bool Holding{ false };
 	
 	UPROPERTY(EditAnywhere)
 		float RotateSpeed = 350.f;

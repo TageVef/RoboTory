@@ -31,13 +31,6 @@ void AMovableObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bHit)
-	{
-		FVector NewLocation = FVector(EndLocation);
-		SetActorLocation(NewLocation, false);
-
-	}
-
 }
 
 bool AMovableObject::GetHit()
@@ -54,4 +47,14 @@ void AMovableObject::SetHit(bool asdf)
 void AMovableObject::SetEndLocation(FVector Location)
 {
 	EndLocation = Location;
+}
+
+void AMovableObject::MoveObject(FVector DirectionSpeed)
+{
+	if (bHit)
+	{
+		FVector Location = GetActorLocation() - (DirectionSpeed);
+
+		SetActorLocation(Location);
+	}
 }
