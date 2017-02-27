@@ -1,2 +1,0 @@
-# RoboTory
-School project
