@@ -10,6 +10,7 @@ ADoor::ADoor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door Mesh"));
 }
 
@@ -27,7 +28,7 @@ void ADoor::Tick(float DeltaTime)
 
 	FVector Location = GetActorLocation() + (Movement * DeltaTime);
 
-	Location.Z = FMath::Clamp(Location.Z, StarterLocation.Z, StarterLocation.Z + 200.0f);
+	Location.Z = FMath::Clamp(Location.Z, StarterLocation.Z, StarterLocation.Z + 250.0f);
 
 	SetActorLocation(Location);
 
