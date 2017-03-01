@@ -20,7 +20,7 @@ AMainPlayer::AMainPlayer()
 	CameraBoom->SetupAttachment(RootComponent);
 	PlayerCamera->SetupAttachment(CameraBoom);
 
-	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
+	
 	
 	//CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collision Box"));
 	//CapsuleComponent->bGenerateOverlapEvents = true;
@@ -42,7 +42,24 @@ void AMainPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-		RotateTowardsMouse(DeltaTime, XPosition, YPosition);
+	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
+
+	RotateTowardsMouse(DeltaTime, XPosition, YPosition);
+
+	if (bShooting)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("bShooting er true!"))
+		SetWalkingSpeed(0.f);
+		StartTimer += DeltaTime;
+
+		if (StartTimer > ShootTimer)
+		{
+			SetWalkingSpeed(700.f);
+			bShooting = false;
+			UE_LOG(LogTemp, Warning, TEXT("bShooting er false!"))
+			StartTimer = 0.f;
+		}
+	}
 
 }
 
@@ -85,7 +102,7 @@ void AMainPlayer::MoveY(float AxisValue)
 
 void AMainPlayer::Climb()
 {
-
+	GetWorld()->GetFirstPlayerController()->GetCharacter()->Jump();
 }
 
 void AMainPlayer::Interact()
@@ -119,12 +136,10 @@ void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 	FVector2D MouseDirection = MouseLocation - ViewportCenter;
 	FVector RotationAngle = FVector(MouseDirection.X, MouseDirection.Y, 0);
 
+	// Set offset so the character rotates correctly
 	FRotator RotationOffset = FRotator(0.f, 90.f, 0.f);
 	FRotationMatrix RotationMatrix(RotationOffset);
 	FVector MyVector = RotationMatrix.TransformVector(RotationAngle);
-
-	
-
 
 	// Find the new rotation
 	FRotator NewRotation = FMath::RInterpConstantTo(GetActorRotation(), MyVector.Rotation(), DeltaTime, RotateSpeed);
@@ -136,16 +151,21 @@ void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 
 void AMainPlayer::Shoot()
 {
+	bShooting = true;
+
 	UWorld* World = GetWorld();
 	if (World)
 	{
-		// There is a problem somewhere, character is shooting from the right side, not the front side.
-		// Probably something wrong in the RotateTowardsMouse() function.
 		FVector Location = GetActorLocation() +(GetActorForwardVector() * 100.f);
 		FRotator Rotation = GetActorRotation();
 
 		World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);
 	}
 	
+}
+
+void AMainPlayer::SetWalkingSpeed(float InWalkingSpeed)
+{
+	WalkingSpeed = InWalkingSpeed;
 }
 

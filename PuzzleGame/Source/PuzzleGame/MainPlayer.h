@@ -62,9 +62,11 @@ private:
 	void RotateTowardsMouse(float DeltaTime, float XPos, float YPos);
 
 	AActor* MovableObject = nullptr;
+
 	float XPosition;
 	float YPosition;
-	float WalkingSpeed = 800.f;
+	float WalkingSpeed = 700.f;
+
 	FVector WalkingVector = GetActorForwardVector() * (WalkingSpeed);
 	bool Holding{ false };
 	
@@ -72,7 +74,10 @@ private:
 		float RotateSpeed = 350.f;
 
 	void Shoot();
-
+	bool bShooting = false;
+	float ShootTimer = .5f;
+	float StartTimer;
+	void SetWalkingSpeed(float InWalkingSpeed);
 
 	
 	
