@@ -74,7 +74,7 @@ private:
 
 	void Shoot();
 	bool bShooting = false;
-	float ShootTimer = .5f;
+	float ShootTimer = 1.f;
 	float StartTimer;
 	void SetWalkingSpeed(float InWalkingSpeed);
 

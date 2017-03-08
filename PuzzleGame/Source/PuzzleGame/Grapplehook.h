@@ -27,7 +27,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		float Speed = 1500.f;
 	UPROPERTY(EditAnywhere)
-		float DespawnTime = 0.5f;
+		float DespawnTime = 1.f;
 
 	AActor* HitBox = nullptr;
 	FVector Movement;
@@ -37,8 +37,6 @@ public:
 		void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
 			UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, 
 			const FHitResult &Sweepresult);
-
-	FVector StartLocation;
 
 
 };

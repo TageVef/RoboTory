@@ -24,6 +24,7 @@ void AMovableObject::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	StartLocation = GetActorLocation();
 }
 
 // Called every frame
@@ -55,6 +56,8 @@ void AMovableObject::MoveObject(FVector DirectionSpeed)
 	{
 		FVector Location = GetActorLocation() - (DirectionSpeed);
 
+		// Keeps the same height on the movable objects affected by grapplehook
+		Location.Z = StartLocation.Z;
 		SetActorLocation(Location);
 	}
 }

@@ -23,8 +23,6 @@ AGrapplehook::AGrapplehook()
 void AGrapplehook::BeginPlay()
 {
 	Super::BeginPlay();
-
-	StartLocation = GetActorLocation();
 	
 }
 
@@ -51,7 +49,8 @@ void AGrapplehook::Tick(float DeltaTime)
 			DespawnTime += DeltaTime;
 		}
 	}
-	if (DespawnTime > 0.5f)
+
+	if (DespawnTime > 1.f)
 	{
 		Cast<AMovableObject>(HitBox)->bHit = false;
 		Destroy();
@@ -59,11 +58,17 @@ void AGrapplehook::Tick(float DeltaTime)
 
 	SetActorLocation(NewLocation, false);
 
-	if (DespawnTime < 0)
+	if (DespawnTime < 0.5f)
+	{
+		NewLocation -= Movement;
+		NewLocation -= Movement;
+		SetActorLocation(NewLocation, false);
+	}
+
+	if (DespawnTime < 0.f)
 	{
 		this->Destroy();
 	}
-
 }
 
 
@@ -76,13 +81,8 @@ void AGrapplehook::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 	{
 		HitBox = OtherActor;
 		UE_LOG(LogTemp, Warning, TEXT("Den traff"))
-			Cast<AMovableObject>(HitBox)->SetHit(true);
+		Cast<AMovableObject>(HitBox)->SetHit(true);
 		FVector Offset = GetActorLocation() + (GetActorForwardVector() * 50.0f);
 		OtherActor->SetActorLocation(Offset);
-	}
-	if (OtherActor->IsA(AMainPlayer::StaticClass()))
-	{
-		Cast<AMovableObject>(HitBox)->bHit = false;
-		Destroy();
 	}
 }

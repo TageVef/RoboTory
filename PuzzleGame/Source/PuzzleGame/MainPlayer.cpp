@@ -73,7 +73,7 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	InputComponent->BindAction("Interact", IE_Released, this, &AMainPlayer::StopInteract);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &AMainPlayer::Shoot);
 
-	//Settign up Axis bindings
+	//Setting up Axis bindings
 	InputComponent->BindAxis("MoveX", this, &AMainPlayer::MoveX);
 	InputComponent->BindAxis("MoveY", this, &AMainPlayer::MoveY);
 
@@ -167,7 +167,6 @@ void AMainPlayer::Shoot()
 	{
 		FVector Location = GetActorLocation() +(GetActorForwardVector() * 100.f);
 		FRotator Rotation = GetActorRotation();
-
 		World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);
 	}
 	

@@ -27,6 +27,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		UShapeComponent* CollisionBox = nullptr;
 
+	FVector StartLocation;
 	FVector EndLocation;
 
 	bool bHit = false;
