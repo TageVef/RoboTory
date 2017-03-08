@@ -60,7 +60,6 @@ void AMainPlayer::Tick(float DeltaTime)
 			StartTimer = 0.f;
 		}
 	}
-
 }
 
 // Called to bind functionality to input
@@ -71,7 +70,7 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	// Setting up Action bindings
 	InputComponent->BindAction("Climb", IE_Pressed, this, &AMainPlayer::Climb);
 	InputComponent->BindAction("Interact", IE_Pressed, this, &AMainPlayer::Interact);
-	InputComponent->BindAction("Interact", IE_Released, this, &AMainPlayer::Interact);
+	InputComponent->BindAction("Interact", IE_Released, this, &AMainPlayer::StopInteract);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &AMainPlayer::Shoot);
 
 	//Settign up Axis bindings
@@ -84,6 +83,7 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 void AMainPlayer::MoveX(float AxisValue)
 {
 	AddMovementInput(FVector::ForwardVector, AxisValue);
+
 	if (MovableObject && Holding)
 	{
 		Cast<AMovableObject>(MovableObject)->MoveObject(GetActorForwardVector() * WalkingSpeed);
@@ -107,7 +107,16 @@ void AMainPlayer::Climb()
 
 void AMainPlayer::Interact()
 {
-	Holding = !Holding;
+	Holding = true;
+	SetWalkingSpeed(200.f);
+	UE_LOG(LogTemp, Warning, TEXT("Interact er true"))
+}
+
+void AMainPlayer::StopInteract()
+{
+	Holding = false;
+	SetWalkingSpeed(700.f);
+	UE_LOG(LogTemp, Warning, TEXT("Interact er false"))
 }
 
 void AMainPlayer::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

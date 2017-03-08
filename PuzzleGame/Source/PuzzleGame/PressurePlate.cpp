@@ -28,6 +28,8 @@ APressurePlate::APressurePlate()
 void APressurePlate::BeginPlay()
 {
 	Super::BeginPlay();
+
+	PlayerCharacter = GetWorld()->GetFirstPlayerController()->GetCharacter();
 	
 }
 
@@ -36,7 +38,7 @@ void APressurePlate::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (CollisionBox->IsOverlappingActor(ObjectThatActivates))
+	if (CollisionBox->IsOverlappingActor(ObjectThatActivates) || CollisionBox->IsOverlappingActor(PlayerCharacter))
 	{
 		Cast<ADoor>(DoorThatOpens)->OpenDoor();
 	}

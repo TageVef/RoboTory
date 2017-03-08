@@ -79,8 +79,6 @@ void AGrapplehook::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 			Cast<AMovableObject>(HitBox)->SetHit(true);
 		FVector Offset = GetActorLocation() + (GetActorForwardVector() * 50.0f);
 		OtherActor->SetActorLocation(Offset);
-		// HitBox->SetEndLocation(StartLocation);
-		// HitBox->MoveObject(NewLocation);
 	}
 	if (OtherActor->IsA(AMainPlayer::StaticClass()))
 	{

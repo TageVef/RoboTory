@@ -24,6 +24,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	AActor* ObjectThatActivates;
 
+	AActor* PlayerCharacter;
+
 	
 public:	
 	// Sets default values for this actor's properties
