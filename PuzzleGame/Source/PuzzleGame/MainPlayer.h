@@ -51,6 +51,15 @@ private:
 			UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep,
 			const FHitResult &Sweepresult);
 
+	AActor* MovableObject = nullptr;
+	
+	float XPosition;
+	float YPosition;
+	float WalkingSpeed = 700.f;
+	FVector WalkingVector = GetActorForwardVector() * (WalkingSpeed);
+	bool Holding = false;
+	float ShootTimer = 1.f;
+
 	void MoveX(float AxisValue);
 
 	void MoveY(float AxisValue);
@@ -63,21 +72,12 @@ private:
 
 	void RotateTowardsMouse(float DeltaTime, float XPos, float YPos);
 
-	AActor* MovableObject = nullptr;
-
-	float XPosition;
-	float YPosition;
-	float WalkingSpeed = 700.f;
-
-	FVector WalkingVector = GetActorForwardVector() * (WalkingSpeed);
-	bool Holding = false;
-
 	void Shoot();
-	bool bShooting = false;
-	float ShootTimer = 1.f;
-	float StartTimer;
+
 	void SetWalkingSpeed(float InWalkingSpeed);
 
-	
-	
+public:
+
+	AActor* HookThatWasShoot = nullptr;
+	bool bShooting = false;
 };

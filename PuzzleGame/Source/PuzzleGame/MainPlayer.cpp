@@ -50,15 +50,12 @@ void AMainPlayer::Tick(float DeltaTime)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("bShooting er true!"))
 		SetWalkingSpeed(0.f);
-		StartTimer += DeltaTime;
-
-		if (StartTimer > ShootTimer)
-		{
-			SetWalkingSpeed(700.f);
-			bShooting = false;
-			UE_LOG(LogTemp, Warning, TEXT("bShooting er false!"))
-			StartTimer = 0.f;
-		}
+	}
+	else
+	{
+		SetWalkingSpeed(700.f);
+		bShooting = false;
+		UE_LOG(LogTemp, Warning, TEXT("bShooting er false!"))
 	}
 }
 
@@ -160,14 +157,19 @@ void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 
 void AMainPlayer::Shoot()
 {
-	bShooting = true;
-
-	UWorld* World = GetWorld();
-	if (World)
+	if (!HookThatWasShoot)
 	{
-		FVector Location = GetActorLocation() +(GetActorForwardVector() * 100.f);
-		FRotator Rotation = GetActorRotation();
-		World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);
+		bShooting = true;
+
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			FVector Location = GetActorLocation() + (GetActorForwardVector() * 100.f);
+			FRotator Rotation = GetActorRotation();
+			HookThatWasShoot = World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);
+
+			Cast<AGrapplehook>(HookThatWasShoot)->PlayerThatShoot = this;
+		}
 	}
 	
 }

@@ -22,6 +22,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
 	UShapeComponent* CollisionBox;
 
 	UPROPERTY(EditAnywhere)
@@ -37,6 +38,10 @@ public:
 		void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
 			UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, 
 			const FHitResult &Sweepresult);
+
+public:
+
+	AActor* PlayerThatShoot = nullptr;
 
 
 };

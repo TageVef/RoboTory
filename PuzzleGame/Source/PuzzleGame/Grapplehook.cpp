@@ -53,6 +53,11 @@ void AGrapplehook::Tick(float DeltaTime)
 	if (DespawnTime > 1.f)
 	{
 		Cast<AMovableObject>(HitBox)->bHit = false;
+		if (PlayerThatShoot)
+		{
+			Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;
+			Cast<AMainPlayer>(PlayerThatShoot)->HookThatWasShoot = nullptr;
+		}
 		Destroy();
 	}
 
@@ -67,6 +72,11 @@ void AGrapplehook::Tick(float DeltaTime)
 
 	if (DespawnTime < 0.f)
 	{
+		if (PlayerThatShoot)
+		{
+			Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;
+			Cast<AMainPlayer>(PlayerThatShoot)->HookThatWasShoot = nullptr;
+		}
 		this->Destroy();
 	}
 }
