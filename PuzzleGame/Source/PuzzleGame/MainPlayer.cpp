@@ -157,7 +157,7 @@ void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 
 void AMainPlayer::Shoot()
 {
-	if (!HookThatWasShoot)
+	if (!bShooting)
 	{
 		bShooting = true;
 
