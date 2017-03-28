@@ -20,11 +20,6 @@ AMainPlayer::AMainPlayer()
 	CameraBoom->SetupAttachment(RootComponent);
 	PlayerCamera->SetupAttachment(CameraBoom);
 
-	
-	
-	//CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collision Box"));
-	//CapsuleComponent->bGenerateOverlapEvents = true;
-	//CapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &AMainPlayer::OnOverlap);
 }
 
 // Called when the game starts or when spawned
@@ -48,14 +43,12 @@ void AMainPlayer::Tick(float DeltaTime)
 
 	if (bShooting)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("bShooting er true!"))
 		SetWalkingSpeed(0.f);
 	}
 	else
 	{
-		SetWalkingSpeed(700.f);
+		SetWalkingSpeed(400.f);
 		bShooting = false;
-		UE_LOG(LogTemp, Warning, TEXT("bShooting er false!"))
 	}
 }
 
@@ -69,6 +62,7 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	InputComponent->BindAction("Interact", IE_Pressed, this, &AMainPlayer::Interact);
 	InputComponent->BindAction("Interact", IE_Released, this, &AMainPlayer::StopInteract);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &AMainPlayer::Shoot);
+	InputComponent->BindAction("AlternateShoot", IE_Pressed, this, &AMainPlayer::AlternateShoot);
 
 	//Setting up Axis bindings
 	InputComponent->BindAxis("MoveX", this, &AMainPlayer::MoveX);
@@ -80,21 +74,11 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 void AMainPlayer::MoveX(float AxisValue)
 {
 	AddMovementInput(FVector::ForwardVector, AxisValue);
-
-	if (MovableObject && Holding)
-	{
-		Cast<AMovableObject>(MovableObject)->MoveObject(GetActorForwardVector() * WalkingSpeed);
-	}
 }
 
 void AMainPlayer::MoveY(float AxisValue)
 {
 	AddMovementInput(FVector::RightVector, AxisValue);
-
-		if (MovableObject && Holding)
-		{
-			Cast<AMovableObject>(MovableObject)->MoveObject(GetActorRightVector() * WalkingSpeed);
-		}
 }
 
 void AMainPlayer::Climb()
@@ -106,14 +90,12 @@ void AMainPlayer::Interact()
 {
 	Holding = true;
 	SetWalkingSpeed(200.f);
-	UE_LOG(LogTemp, Warning, TEXT("Interact er true"))
 }
 
 void AMainPlayer::StopInteract()
 {
 	Holding = false;
-	SetWalkingSpeed(700.f);
-	UE_LOG(LogTemp, Warning, TEXT("Interact er false"))
+	SetWalkingSpeed(400.f);
 }
 
 void AMainPlayer::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -172,6 +154,24 @@ void AMainPlayer::Shoot()
 		}
 	}
 	
+}
+
+void AMainPlayer::AlternateShoot()
+{
+	/*if (!bShooting)
+	{
+		bShooting = true;
+
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			FVector Location = GetActorLocation() + GetActorForwardVector() * 100.f;
+			FRotator Rotation = GetActorRotation();
+			HookThatWasShoot = World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);
+
+			Cast<AGrapplehook>(HookThatWasShoot)->PlayerThatShoot = this;
+		}
+	}*/
 }
 
 void AMainPlayer::SetWalkingSpeed(float InWalkingSpeed)

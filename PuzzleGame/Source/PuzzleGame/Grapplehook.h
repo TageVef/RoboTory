@@ -34,6 +34,10 @@ private:
 	FVector Movement;
 	FVector NewLocation;
 
+	ACharacter* PlayerCharacter = nullptr;
+	FVector PCMovement;
+	FVector PCNewLocation;
+
 	UFUNCTION()
 		void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
 			UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, 

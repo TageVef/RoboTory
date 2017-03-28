@@ -18,6 +18,8 @@ ADoor::ADoor()
 void ADoor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	StarterLocation = GetActorLocation();
 	
 }
 
@@ -28,7 +30,20 @@ void ADoor::Tick(float DeltaTime)
 
 	FVector Location = GetActorLocation() + (Movement * DeltaTime);
 
-	Location.Z = FMath::Clamp(Location.Z, StarterLocation.Z, StarterLocation.Z + 250.0f);
+	if (MoveDirectionX)
+	{
+		Location.X = FMath::Clamp(Location.X, StarterLocation.X, StarterLocation.X + MoveXValue);
+	}
+
+	if (MoveDirectionY)
+	{
+		Location.Y = FMath::Clamp(Location.Y, StarterLocation.Y, StarterLocation.Y + MoveYValue);
+	}
+
+	if (MoveDirectionZ)
+	{
+		Location.Z = FMath::Clamp(Location.Z, StarterLocation.Z, StarterLocation.Z + MoveZValue);
+	}
 
 	SetActorLocation(Location);
 
@@ -36,11 +51,39 @@ void ADoor::Tick(float DeltaTime)
 
 void ADoor::OpenDoor()
 {
-	Movement = GetActorUpVector() * 200.0f;
+	if (MoveDirectionX)
+	{
+		Movement = GetActorForwardVector() * MovementSpeedForward;
+	}
+
+	if (MoveDirectionY)
+	{
+		Movement = GetActorRightVector() * MovementSpeedRight;
+	}
+
+	if (MoveDirectionZ)
+	{
+		Movement = GetActorUpVector() * MovementSpeedUp;
+	}
+	
 }
 
 void ADoor::CloseDoor()
 {
-	Movement = GetActorUpVector() * -200.0f;
+	if (MoveDirectionX)
+	{
+		Movement = GetActorForwardVector() * -MovementSpeedForward;
+	}
+
+	if (MoveDirectionY)
+	{
+		Movement = GetActorRightVector() * -MovementSpeedRight;
+	}
+
+	if (MoveDirectionZ)
+	{
+		Movement = GetActorUpVector() * -MovementSpeedUp;
+	}
+	
 }
 

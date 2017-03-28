@@ -40,6 +40,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Grapplehook")
 		TSubclassOf<class AGrapplehook> GrapplehookBlueprint;
 
+	/// Is this in use?
 	UPROPERTY(VisibleAnywhere)
 		TSubclassOf<class AMovableObject> DragBox;
 
@@ -55,7 +56,7 @@ private:
 	
 	float XPosition;
 	float YPosition;
-	float WalkingSpeed = 700.f;
+	float WalkingSpeed = 400.f;
 	FVector WalkingVector = GetActorForwardVector() * (WalkingSpeed);
 	bool Holding = false;
 	float ShootTimer = 1.f;
@@ -73,6 +74,8 @@ private:
 	void RotateTowardsMouse(float DeltaTime, float XPos, float YPos);
 
 	void Shoot();
+
+	void AlternateShoot();
 
 	void SetWalkingSpeed(float InWalkingSpeed);
 
