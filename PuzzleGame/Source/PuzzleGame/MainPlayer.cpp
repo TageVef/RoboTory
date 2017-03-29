@@ -39,15 +39,14 @@ void AMainPlayer::Tick(float DeltaTime)
 
 	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
 
-	RotateTowardsMouse(DeltaTime, XPosition, YPosition);
-
 	if (bShooting)
 	{
-		SetWalkingSpeed(0.f);
+		SetWalkingSpeed(StopMovementSpeed);
 	}
 	else
 	{
-		SetWalkingSpeed(400.f);
+		SetWalkingSpeed(NormalRunningSpeed);
+		RotateTowardsMouse(DeltaTime, XPosition, YPosition);
 		bShooting = false;
 	}
 }

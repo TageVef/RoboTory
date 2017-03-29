@@ -38,7 +38,10 @@ void APressurePlate::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (CollisionBox->IsOverlappingActor(ObjectThatActivates) || CollisionBox->IsOverlappingActor(PlayerCharacter))
+	if (CollisionBox->IsOverlappingActor(ObjectThatActivates) || 
+		CollisionBox->IsOverlappingActor(ObjectThatActivates2) || 
+		CollisionBox->IsOverlappingActor(ObjectThatActivates3) ||
+		(PlayerCanActivate && CollisionBox->IsOverlappingActor(PlayerCharacter)))
 	{
 		Cast<ADoor>(DoorThatOpens)->OpenDoor();
 	}

@@ -24,6 +24,15 @@ private:
 	UPROPERTY(EditAnywhere)
 	AActor* ObjectThatActivates;
 
+	UPROPERTY(EditAnywhere)
+	AActor* ObjectThatActivates2;
+
+	UPROPERTY(EditAnywhere)
+	AActor* ObjectThatActivates3;
+
+	UPROPERTY(EditAnywhere)
+	bool PlayerCanActivate = false;
+
 	AActor* PlayerCharacter;
 
 	

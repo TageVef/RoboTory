@@ -56,7 +56,12 @@ private:
 	
 	float XPosition;
 	float YPosition;
-	float WalkingSpeed = 400.f;
+
+	UPROPERTY(EditAnywhere)
+		float NormalRunningSpeed = 400.f;
+	float const StopMovementSpeed = 0.f;
+	float WalkingSpeed = NormalRunningSpeed;
+
 	FVector WalkingVector = GetActorForwardVector() * (WalkingSpeed);
 	bool Holding = false;
 	float ShootTimer = 1.f;
