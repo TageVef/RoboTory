@@ -4,6 +4,7 @@
 #include "Grapplehook.h"
 #include "MainPlayer.h"
 #include "MovableObject.h"
+#include "Door.h"
 
 
 // Sets default values
@@ -12,18 +13,21 @@ AGrapplehook::AGrapplehook()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	CollisionBox = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionBox"));
-	CollisionBox->bGenerateOverlapEvents = true;
-	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AGrapplehook::OnOverlap);
-
-
+	
 }
 
 // Called when the game starts or when spawned
 void AGrapplehook::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	//CollisionBox = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionBox"));
+	CollisionBox = FindComponentByClass<USphereComponent>();
+	//CollisionBox->bGenerateOverlapEvents = true;
+	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AGrapplehook::OnOverlap);
+
+	LaunchVelocity = GetActorForwardVector() * 1000000;
+	Cast<UPrimitiveComponent>(RootComponent)->AddForce(LaunchVelocity);
 }
 
 // Called every frame
@@ -31,7 +35,17 @@ void AGrapplehook::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	NewLocation = GetActorLocation();
+	
+	
+
+	
+	//launch i en retning
+
+	//launch tilbake
+
+	//destory()
+
+	/*NewLocation = GetActorLocation();
 
 	Movement = GetActorForwardVector() * Speed * DeltaTime;
 
@@ -42,43 +56,48 @@ void AGrapplehook::Tick(float DeltaTime)
 	}
 	else if (HitBox)
 	{
-		if (Cast<AMovableObject>(HitBox)->bHit)
+		if (HitBox->IsA(AMovableObject::StaticClass()))
 		{
-			NewLocation -= Movement;
-			Cast<AMovableObject>(HitBox)->MoveObject(Movement);
-			DespawnTime += DeltaTime;
+			if (Cast<AMovableObject>(HitBox)->bHit)
+			{
+
+				Cast<AMovableObject>(HitBox)->MoveObject(Movement);
+				
+			}
 		}
+		NewLocation -= Movement;
+		DespawnTime += DeltaTime;
 	}
 
 	if (DespawnTime > 1.f)
 	{
-		Cast<AMovableObject>(HitBox)->bHit = false;
-		if (PlayerThatShoot)
-		{
-			Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;
-			Cast<AMainPlayer>(PlayerThatShoot)->HookThatWasShoot = nullptr;
-		}
-		Destroy();
+			if (PlayerThatShoot->IsA(AMainPlayer::StaticClass()))
+			{
+					Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;
+				Cast<AMainPlayer>(PlayerThatShoot)->HookThatWasShoot = nullptr;
+				Destroy();
+			}
 	}
-
-	SetActorLocation(NewLocation, false);
-
-	if (DespawnTime < 0.5f)
+	else if (DespawnTime < 0.5f)
 	{
 		NewLocation -= Movement;
 		NewLocation -= Movement;
-		SetActorLocation(NewLocation, false);
 	}
 
 	if (DespawnTime < 0.f)
 	{
-		if (PlayerThatShoot)
+		if (PlayerThatShoot->IsA(AMainPlayer::StaticClass()))
 		{
 			Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;
 			Cast<AMainPlayer>(PlayerThatShoot)->HookThatWasShoot = nullptr;
+			Destroy();
 		}
-		this->Destroy();
+		
 	}
+	SetActorLocation(NewLocation, false);*/
+
+
+
 }
 
 
@@ -86,7 +105,11 @@ void AGrapplehook::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep,
 	const FHitResult &Sweepresult)
 {
-	
+	if (OtherActor->IsRootComponentStatic())
+	{
+		HitBox = OtherActor;
+	}
+
 	if (OtherActor->IsA(AMovableObject::StaticClass()))
 	{
 		HitBox = OtherActor;

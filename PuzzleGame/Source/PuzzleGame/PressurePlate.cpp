@@ -30,7 +30,7 @@ void APressurePlate::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerCharacter = GetWorld()->GetFirstPlayerController()->GetCharacter();
-	
+
 }
 
 // Called every frame

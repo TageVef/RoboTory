@@ -23,7 +23,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	UShapeComponent* CollisionBox;
+	
 
 	UPROPERTY(EditAnywhere)
 		float Speed = 1500.f;
@@ -44,8 +44,10 @@ private:
 			const FHitResult &Sweepresult);
 
 public:
+	UPROPERTY(EditAnywhere)
+	UShapeComponent* CollisionBox;
 
 	AActor* PlayerThatShoot = nullptr;
-
+	FVector LaunchVelocity;
 
 };

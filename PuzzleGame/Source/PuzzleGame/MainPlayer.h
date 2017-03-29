@@ -47,11 +47,6 @@ private:
 	UPROPERTY(EditAnywhere)
 		float RotateSpeed = 350.f;
 
-	UFUNCTION()
-		void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-			UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep,
-			const FHitResult &Sweepresult);
-
 	AActor* MovableObject = nullptr;
 	
 	float XPosition;
@@ -88,4 +83,7 @@ public:
 
 	AActor* HookThatWasShoot = nullptr;
 	bool bShooting = false;
+
+	FHitResult Hit;
+	
 };

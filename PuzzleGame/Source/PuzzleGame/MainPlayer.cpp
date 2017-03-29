@@ -30,6 +30,7 @@ void AMainPlayer::BeginPlay()
 	// Shows mouse cursor so you see where you aim (rotate)
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 
+
 }
 
 // Called every frame
@@ -37,7 +38,6 @@ void AMainPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
 
 	if (bShooting)
 	{
@@ -49,6 +49,21 @@ void AMainPlayer::Tick(float DeltaTime)
 		RotateTowardsMouse(DeltaTime, XPosition, YPosition);
 		bShooting = false;
 	}
+
+	
+	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
+	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
+	DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 1000, FColor::Red, false, 0.f, 0, 5.f);
+
+	GetWorld()->LineTraceSingleByObjectType(Hit, GetActorLocation() + GetActorForwardVector() * 100, GetActorLocation() + GetActorForwardVector() * 1000, 
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody), TraceParameters);
+
+	if (Hit.GetActor())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Trace hit: %s"), *Hit.GetActor()->GetName())
+	}
+
+
 }
 
 // Called to bind functionality to input
@@ -89,22 +104,14 @@ void AMainPlayer::Interact()
 {
 	Holding = true;
 	SetWalkingSpeed(200.f);
+
+	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter((GetActorForwardVector() * 10000), false, true);
 }
 
 void AMainPlayer::StopInteract()
 {
 	Holding = false;
 	SetWalkingSpeed(400.f);
-}
-
-void AMainPlayer::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep,
-	const FHitResult &Sweepresult)
-{
-	if (OtherActor->IsA(AMovableObject::StaticClass()))
-	{
-		MovableObject = OtherActor;
-	}
 }
 
 

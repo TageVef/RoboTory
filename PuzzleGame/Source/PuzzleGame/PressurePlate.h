@@ -34,7 +34,6 @@ private:
 	bool PlayerCanActivate = false;
 
 	AActor* PlayerCharacter;
-
 	
 public:	
 	// Sets default values for this actor's properties
