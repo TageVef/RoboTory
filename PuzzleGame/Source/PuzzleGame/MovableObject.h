@@ -30,6 +30,9 @@ public:
 	FVector StartLocation;
 	FVector EndLocation;
 
+	AActor* Grapplehook = nullptr;
+	ACharacter* PlayerCharacter;
+
 	bool bHit = false;
 
 	bool GetHit();
@@ -39,4 +42,6 @@ public:
 	void SetEndLocation(FVector Location);
 
 	void MoveObject(FVector DirectionSpeed);
+
+	void LaunchObject();
 };

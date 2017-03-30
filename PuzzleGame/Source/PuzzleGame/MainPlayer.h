@@ -61,6 +61,7 @@ private:
 	bool Holding = false;
 	float ShootTimer = 1.f;
 
+
 	void MoveX(float AxisValue);
 
 	void MoveY(float AxisValue);
@@ -83,7 +84,8 @@ public:
 
 	AActor* HookThatWasShoot = nullptr;
 	bool bShooting = false;
-
+	FVector StartLineTrace;
+	FVector EndLineTrace;
 	FHitResult Hit;
 	
 };

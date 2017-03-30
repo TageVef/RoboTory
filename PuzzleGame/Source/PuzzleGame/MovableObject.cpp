@@ -3,6 +3,7 @@
 #include "PuzzleGame.h"
 #include "MovableObject.h"
 #include "Grapplehook.h"
+#include "MainPlayer.h"
 
 
 // Sets default values
@@ -11,11 +12,12 @@ AMovableObject::AMovableObject()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	RootComponent = CreateDefaultSubobject<USceneCaptureComponent>(TEXT("RootComponent"));
+	// RootComponent = CreateDefaultSubobject<USceneCaptureComponent>(TEXT("RootComponent"));
 	VisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleComponent"));
 	VisibleComponent->SetupAttachment(RootComponent);
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
 	CollisionBox->bGenerateOverlapEvents = true;
+	CollisionBox->SetupAttachment(RootComponent);
 
 }
 
@@ -25,12 +27,15 @@ void AMovableObject::BeginPlay()
 	Super::BeginPlay();
 	
 	StartLocation = GetActorLocation();
+
 }
 
 // Called every frame
 void AMovableObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+
 
 }
 
@@ -60,4 +65,9 @@ void AMovableObject::MoveObject(FVector DirectionSpeed)
 		Location.Z = StartLocation.Z;
 		SetActorLocation(Location);
 	}
+}
+
+void AMovableObject::LaunchObject()
+{
+	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(GetActorForwardVector() * -1000 + FVector(0.f, 0.f, 400.f), NAME_None, true);
 }

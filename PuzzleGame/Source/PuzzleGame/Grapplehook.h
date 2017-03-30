@@ -25,10 +25,10 @@ public:
 private:
 	
 
-	UPROPERTY(EditAnywhere)
+	/*UPROPERTY(EditAnywhere)
 		float Speed = 1500.f;
 	UPROPERTY(EditAnywhere)
-		float DespawnTime = 1.f;
+		float DespawnTime = 1.f;*/
 
 	AActor* HitBox = nullptr;
 	FVector Movement;
@@ -48,6 +48,37 @@ public:
 	UShapeComponent* CollisionBox;
 
 	AActor* PlayerThatShoot = nullptr;
+	AActor* ActorHit = nullptr;
 	FVector LaunchVelocity;
+	FVector ReturnVelocity;
+
+	// Alot of locations. Dont know if theyre all in use
+	FVector SpawnLocation;
+	FVector ReturnLocation;
+	FRotator SpawnRotation;
+	FVector DifferenceBetween;
+	FVector Location;
+	FVector TempLocation;
+	FVector CollisionLocation;
+
+	bool bMovingBack = false;
+	bool bHitWall = false;
+
+	// The speed of the grapplehook
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		int Speed = 1300;
+
+	// How far will the grapplehook go before it returns to spawnpoint
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		int DistanceBeforeReturn = 700;
+
+	void LaunchForward();
+	void LaunchBackwards(bool &bMovingBack);
+	void CheckDestroy();
+
+
+	UFUNCTION()
+		void OnHit(AActor* SelfActor, AActor* OtherActor, 
+			FVector NormalImpulse, const FHitResult& Hit);
 
 };

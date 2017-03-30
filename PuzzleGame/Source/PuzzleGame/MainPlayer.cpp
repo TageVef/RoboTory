@@ -38,6 +38,7 @@ void AMainPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
 
 	if (bShooting)
 	{
@@ -50,18 +51,19 @@ void AMainPlayer::Tick(float DeltaTime)
 		bShooting = false;
 	}
 
-	
-	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
+	StartLineTrace = GetActorLocation() + GetActorForwardVector() * 100;
+	EndLineTrace = GetActorLocation() + GetActorForwardVector() * 800;
 	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
-	DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 1000, FColor::Red, false, 0.f, 0, 5.f);
 
-	GetWorld()->LineTraceSingleByObjectType(Hit, GetActorLocation() + GetActorForwardVector() * 100, GetActorLocation() + GetActorForwardVector() * 1000, 
+	DrawDebugLine(GetWorld(), StartLineTrace, EndLineTrace, FColor::Red, false, 0.f, 0, 5.f);
+
+	GetWorld()->LineTraceSingleByObjectType(Hit, StartLineTrace, EndLineTrace, 
 		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody), TraceParameters);
 
-	if (Hit.GetActor())
+	/*if (Hit.GetActor())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Trace hit: %s"), *Hit.GetActor()->GetName())
-	}
+	}*/
 
 
 }

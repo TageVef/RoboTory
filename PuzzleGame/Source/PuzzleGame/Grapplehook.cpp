@@ -21,13 +21,16 @@ void AGrapplehook::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//CollisionBox = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionBox"));
 	CollisionBox = FindComponentByClass<USphereComponent>();
-	//CollisionBox->bGenerateOverlapEvents = true;
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AGrapplehook::OnOverlap);
+	this->OnActorHit.AddDynamic(this, &AGrapplehook::OnHit);
 
-	LaunchVelocity = GetActorForwardVector() * 1000000;
-	Cast<UPrimitiveComponent>(RootComponent)->AddForce(LaunchVelocity);
+	LaunchVelocity = GetActorForwardVector() * Speed;
+	LaunchForward();
+	
+	SpawnLocation = GetActorLocation();
+	SpawnRotation = GetActorRotation();
+
 }
 
 // Called every frame
@@ -35,69 +38,28 @@ void AGrapplehook::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Location = GetActorLocation();
+
+	// Find the difference between the vectors
+	DifferenceBetween = Location - SpawnLocation;
+
+	// If the lenght between them is greater than X, launch the hook back
+	if (DifferenceBetween.Size() >= DistanceBeforeReturn)
+	{
+		LaunchBackwards(bMovingBack);
+	}
 	
+	// If the hook is moving back to the player, check if the destroy criteria have been met
+	if (bMovingBack)
+	{
+		CheckDestroy();
+	}
+
+	if (this)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Difference: %f"), DifferenceBetween.Size())
+	}
 	
-
-	
-	//launch i en retning
-
-	//launch tilbake
-
-	//destory()
-
-	/*NewLocation = GetActorLocation();
-
-	Movement = GetActorForwardVector() * Speed * DeltaTime;
-
-	if (!HitBox)
-	{
-		NewLocation += Movement;
-		DespawnTime -= DeltaTime;
-	}
-	else if (HitBox)
-	{
-		if (HitBox->IsA(AMovableObject::StaticClass()))
-		{
-			if (Cast<AMovableObject>(HitBox)->bHit)
-			{
-
-				Cast<AMovableObject>(HitBox)->MoveObject(Movement);
-				
-			}
-		}
-		NewLocation -= Movement;
-		DespawnTime += DeltaTime;
-	}
-
-	if (DespawnTime > 1.f)
-	{
-			if (PlayerThatShoot->IsA(AMainPlayer::StaticClass()))
-			{
-					Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;
-				Cast<AMainPlayer>(PlayerThatShoot)->HookThatWasShoot = nullptr;
-				Destroy();
-			}
-	}
-	else if (DespawnTime < 0.5f)
-	{
-		NewLocation -= Movement;
-		NewLocation -= Movement;
-	}
-
-	if (DespawnTime < 0.f)
-	{
-		if (PlayerThatShoot->IsA(AMainPlayer::StaticClass()))
-		{
-			Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;
-			Cast<AMainPlayer>(PlayerThatShoot)->HookThatWasShoot = nullptr;
-			Destroy();
-		}
-		
-	}
-	SetActorLocation(NewLocation, false);*/
-
-
-
 }
 
 
@@ -105,17 +67,80 @@ void AGrapplehook::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep,
 	const FHitResult &Sweepresult)
 {
-	if (OtherActor->IsRootComponentStatic())
+	//if (OtherActor->IsRootComponentStatic())
+	//{
+	//	HitBox = OtherActor;
+	//}
+
+	//if (OtherActor->IsA(AMovableObject::StaticClass()))
+	//{
+	//	HitBox = OtherActor;
+	//	UE_LOG(LogTemp, Warning, TEXT("Den traff"))
+	//	Cast<AMovableObject>(HitBox)->SetHit(true);
+	//	FVector Offset = GetActorLocation() + (GetActorForwardVector() * 50.0f);
+	//	OtherActor->SetActorLocation(Offset);
+	//}
+}
+
+void AGrapplehook::LaunchForward()
+{
+	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(LaunchVelocity, NAME_None, true);
+}
+
+void AGrapplehook::LaunchBackwards(bool &bMovingBack)
+{
+	if (bHitWall)
 	{
-		HitBox = OtherActor;
+		/*ReturnVelocity = TempLocation - SpawnLocation;
+		Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(ReturnVelocity * -1.5, NAME_None, true);
+		UE_LOG(LogTemp, Warning, TEXT("Går bakover på en veldig rar måte!"))*/
+		bHitWall = false;
+
+		CheckDestroy();
 	}
 
-	if (OtherActor->IsA(AMovableObject::StaticClass()))
+	else
 	{
-		HitBox = OtherActor;
-		UE_LOG(LogTemp, Warning, TEXT("Den traff"))
-		Cast<AMovableObject>(HitBox)->SetHit(true);
-		FVector Offset = GetActorLocation() + (GetActorForwardVector() * 50.0f);
-		OtherActor->SetActorLocation(Offset);
+		Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(LaunchVelocity * -1, NAME_None, true);
+		bMovingBack = true;
+		UE_LOG(LogTemp, Warning, TEXT("Går bakover!"))
 	}
+
+	CheckDestroy();
+	
+}
+
+void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector NormalImpulse, const FHitResult & Hit)
+{
+
+	if (!OtherActor->IsA(AMovableObject::StaticClass()))
+	{
+		bHitWall = true;
+		TempLocation = GetActorLocation();
+		UE_LOG(LogTemp, Warning, TEXT("Kolliderte med veggen!"))
+		LaunchBackwards(bMovingBack);
+	}
+
+	else
+	{
+		bHitWall = true;	
+		CheckDestroy();
+
+		HitBox = OtherActor;
+		Cast<AMovableObject>(HitBox)->SetActorRotation(SpawnRotation);
+		Cast<AMovableObject>(HitBox)->LaunchObject();
+	
+	}
+}
+
+void AGrapplehook::CheckDestroy()
+{
+	if (DifferenceBetween.Size() <= 100.f || bHitWall)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Destroy hook!"))
+			this->Destroy();
+		bMovingBack = false;
+		Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;
+	}
+	
 }
