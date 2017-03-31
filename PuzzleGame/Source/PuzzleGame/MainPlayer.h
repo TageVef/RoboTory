@@ -87,5 +87,7 @@ public:
 	FVector StartLineTrace;
 	FVector EndLineTrace;
 	FHitResult Hit;
+
+	void LaunchPlayer();
 	
 };

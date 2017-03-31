@@ -12,7 +12,6 @@ AMovableObject::AMovableObject()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// RootComponent = CreateDefaultSubobject<USceneCaptureComponent>(TEXT("RootComponent"));
 	VisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleComponent"));
 	VisibleComponent->SetupAttachment(RootComponent);
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));

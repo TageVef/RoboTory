@@ -107,7 +107,7 @@ void AMainPlayer::Interact()
 	Holding = true;
 	SetWalkingSpeed(200.f);
 
-	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter((GetActorForwardVector() * 10000), false, true);
+	LaunchPlayer();
 }
 
 void AMainPlayer::StopInteract()
@@ -185,5 +185,10 @@ void AMainPlayer::AlternateShoot()
 void AMainPlayer::SetWalkingSpeed(float InWalkingSpeed)
 {
 	WalkingSpeed = InWalkingSpeed;
+}
+
+void AMainPlayer::LaunchPlayer()
+{
+	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter((GetActorForwardVector() * 800 + FVector(0.f, 0.f, 350.f)), false, false);
 }
 

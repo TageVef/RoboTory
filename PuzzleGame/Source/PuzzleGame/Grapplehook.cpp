@@ -5,6 +5,7 @@
 #include "MainPlayer.h"
 #include "MovableObject.h"
 #include "Door.h"
+#include "GrapplePoint.h"
 
 
 // Sets default values
@@ -112,10 +113,17 @@ void AGrapplehook::LaunchBackwards(bool &bMovingBack)
 
 void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector NormalImpulse, const FHitResult & Hit)
 {
-
-	if (!OtherActor->IsA(AMovableObject::StaticClass()))
+	if (OtherActor->IsA(AGrapplePoint::StaticClass()))
 	{
 		bHitWall = true;
+		CheckDestroy();
+		Cast<AMainPlayer>(PlayerThatShoot)->LaunchPlayer();
+	}
+
+	else if (!OtherActor->IsA(AMovableObject::StaticClass()))
+	{
+		bHitWall = true;
+		CheckDestroy();
 		TempLocation = GetActorLocation();
 		UE_LOG(LogTemp, Warning, TEXT("Kolliderte med veggen!"))
 		LaunchBackwards(bMovingBack);

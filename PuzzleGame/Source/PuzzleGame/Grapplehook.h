@@ -23,18 +23,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	
-
-	/*UPROPERTY(EditAnywhere)
-		float Speed = 1500.f;
-	UPROPERTY(EditAnywhere)
-		float DespawnTime = 1.f;*/
 
 	AActor* HitBox = nullptr;
 	FVector Movement;
 	FVector NewLocation;
 
-	ACharacter* PlayerCharacter = nullptr;
+	ACharacter* PlayerCharacter;
 	FVector PCMovement;
 	FVector PCNewLocation;
 
