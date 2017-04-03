@@ -6,6 +6,7 @@
 #include "MovableObject.h"
 #include "Door.h"
 #include "GrapplePoint.h"
+#include "Lever.h"
 
 
 // Sets default values
@@ -123,6 +124,16 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 		Cast<AMainPlayer>(PlayerThatShoot)->LaunchPlayer();
 	}
 
+	else if (OtherActor->IsA(ALever::StaticClass()))
+	{
+		bHitWall = true;
+		CheckDestroy();
+
+		HitBox = OtherActor;
+
+		Cast<ALever>(HitBox)->FlipHit();
+	}
+
 	else if (!OtherActor->IsA(AMovableObject::StaticClass()))
 	{
 		bHitWall = true;
@@ -153,7 +164,11 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 
 		if (DifferenceBetween.Size() > 400.f)
 		{
-			Cast<AMovableObject>(HitBox)->LaunchObject(700, 500.f);
+			Cast<AMovableObject>(HitBox)->LaunchObject(750, 500.f);
+		}
+		else if (DifferenceBetween.Size() > 200.f)
+		{
+			Cast<AMovableObject>(HitBox)->LaunchObject(650, 400.f);
 		}
 		else
 		{
@@ -167,7 +182,7 @@ void AGrapplehook::CheckDestroy()
 	if (DifferenceBetween.Size() <= 100.f || bHitWall)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Destroy hook!"))
-			this->Destroy();
+		this->Destroy();
 		bMovingBack = false;
 		Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;
 	}
