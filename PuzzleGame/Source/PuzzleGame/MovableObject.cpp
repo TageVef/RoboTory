@@ -66,7 +66,7 @@ void AMovableObject::MoveObject(FVector DirectionSpeed)
 	}
 }
 
-void AMovableObject::LaunchObject()
+void AMovableObject::LaunchObject(int inForce, float inHeight)
 {
-	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(GetActorForwardVector() * -1000 + FVector(0.f, 0.f, 400.f), NAME_None, true);
+	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(GetActorForwardVector() * -inForce + FVector(0.f, 0.f, inHeight), NAME_None, true);
 }

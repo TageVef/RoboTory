@@ -56,10 +56,7 @@ void AGrapplehook::Tick(float DeltaTime)
 		CheckDestroy();
 	}
 
-	if (this)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Difference: %f"), DifferenceBetween.Size())
-	}
+	
 	
 }
 
@@ -117,6 +114,12 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 	{
 		bHitWall = true;
 		CheckDestroy();
+
+		if (this)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Difference: %f"), DifferenceBetween.Size())
+		}
+
 		Cast<AMainPlayer>(PlayerThatShoot)->LaunchPlayer();
 	}
 
@@ -126,6 +129,12 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 		CheckDestroy();
 		TempLocation = GetActorLocation();
 		UE_LOG(LogTemp, Warning, TEXT("Kolliderte med veggen!"))
+
+		if (this)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Difference: %f"), DifferenceBetween.Size())
+		}
+
 		LaunchBackwards(bMovingBack);
 	}
 
@@ -134,10 +143,22 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 		bHitWall = true;	
 		CheckDestroy();
 
+		if (this)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Difference: %f"), DifferenceBetween.Size())
+		}
+
 		HitBox = OtherActor;
 		Cast<AMovableObject>(HitBox)->SetActorRotation(SpawnRotation);
-		Cast<AMovableObject>(HitBox)->LaunchObject();
-	
+
+		if (DifferenceBetween.Size() > 400.f)
+		{
+			Cast<AMovableObject>(HitBox)->LaunchObject(700, 500.f);
+		}
+		else
+		{
+			Cast<AMovableObject>(HitBox)->LaunchObject(500, 300.f);
+		}
 	}
 }
 

@@ -3,7 +3,6 @@
 #include "PuzzleGame.h"
 #include "PressurePlate.h"
 #include "Door.h"
-#include "MovableObject.h"
 
 
 // Sets default values
@@ -31,7 +30,7 @@ void APressurePlate::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerCharacter = GetWorld()->GetFirstPlayerController()->GetCharacter();
-	// MoveObject = Cast<AMovableObject>(MoveObject);
+	
 }
 
 // Called every frame
@@ -46,7 +45,6 @@ void APressurePlate::Tick(float DeltaTime)
 	{
 		Cast<ADoor>(DoorThatOpens)->OpenDoor();
 	}
-
 	else
 	{
 		Cast<ADoor>(DoorThatOpens)->CloseDoor();
