@@ -14,9 +14,13 @@ AMovableObject::AMovableObject()
 
 	VisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleComponent"));
 	VisibleComponent->SetupAttachment(RootComponent);
-	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
+
+	// SkeletonMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMeshComponent"));
+	// SkeletonMesh->SetupAttachment(RootComponent);
+
+	/*CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
 	CollisionBox->bGenerateOverlapEvents = true;
-	CollisionBox->SetupAttachment(RootComponent);
+	CollisionBox->SetupAttachment(RootComponent);*/
 
 }
 

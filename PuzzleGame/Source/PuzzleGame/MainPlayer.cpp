@@ -107,7 +107,7 @@ void AMainPlayer::Interact()
 	Holding = true;
 	SetWalkingSpeed(200.f);
 
-	LaunchPlayer();
+	// LaunchPlayer();
 }
 
 void AMainPlayer::StopInteract()

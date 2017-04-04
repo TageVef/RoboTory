@@ -33,6 +33,7 @@ void ALever::Tick(float DeltaTime)
 		if (bHit)
 		{
 			Cast<ADoor>(WhatToActivate)->OpenDoor();
+			UE_LOG(LogTemp, Warning, TEXT("Aaaaand open!"))
 		}
 		else
 		{

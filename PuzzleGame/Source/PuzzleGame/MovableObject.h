@@ -24,8 +24,12 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		USceneComponent* VisibleComponent = nullptr;
-	UPROPERTY(EditAnywhere)
-		UShapeComponent* CollisionBox = nullptr;
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		USkeletalMeshComponent* SkeletonMesh = nullptr;*/
+
+	/*UPROPERTY(EditAnywhere)
+		UShapeComponent* CollisionBox = nullptr;*/
 
 	FVector StartLocation;
 	FVector EndLocation;
