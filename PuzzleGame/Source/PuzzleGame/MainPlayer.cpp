@@ -40,8 +40,8 @@ void AMainPlayer::Tick(float DeltaTime)
 
 	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
 
-	StartLineTrace = (GetActorLocation() + GetActorForwardVector() * 70) - FVector(0.f, 0.f, 100.f);
-	EndLineTrace = (GetActorLocation() + GetActorForwardVector() * 770) - FVector(0.f, 0.f, 100.f);
+	StartLineTrace = (GetActorLocation() + GetActorForwardVector() * 85) - FVector(0.f, 0.f, 50.f);
+	EndLineTrace = (GetActorLocation() + GetActorForwardVector() * 785) - FVector(0.f, 0.f, 50.f);
 	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
 
 	DrawDebugLine(GetWorld(), StartLineTrace, EndLineTrace, FColor::Red, false, 0.f, 0, 5.f);

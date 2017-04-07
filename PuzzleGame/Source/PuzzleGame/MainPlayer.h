@@ -53,7 +53,7 @@ private:
 	float YPosition;
 
 	UPROPERTY(EditAnywhere)
-		float NormalRunningSpeed = 400.f;
+		float NormalRunningSpeed = 300.f;
 	float const StopMovementSpeed = 0.f;
 	float WalkingSpeed = NormalRunningSpeed;
 
