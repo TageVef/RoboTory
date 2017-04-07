@@ -70,7 +70,7 @@ void AMovableObject::MoveObject(FVector DirectionSpeed)
 	}
 }
 
-void AMovableObject::LaunchObject(int inForce, float inHeight)
+void AMovableObject::LaunchObject(FVector StartLocation)
 {
-	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(GetActorForwardVector() * -inForce + FVector(0.f, 0.f, inHeight), NAME_None, true);
+	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse((GetActorLocation() - StartLocation) * -1.2 + FVector(0.f, 0.f, 350.f), NAME_None, true);
 }

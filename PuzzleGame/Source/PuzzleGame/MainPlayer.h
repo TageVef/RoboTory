@@ -89,5 +89,5 @@ public:
 	FHitResult Hit;
 
 	void LaunchPlayer();
-	
+	void LaunchPlayerTest();
 };

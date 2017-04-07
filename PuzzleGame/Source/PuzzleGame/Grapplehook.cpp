@@ -160,20 +160,10 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 		}
 
 		HitBox = OtherActor;
-		Cast<AMovableObject>(HitBox)->SetActorRotation(SpawnRotation);
 
-		if (DifferenceBetween.Size() > 400.f)
-		{
-			Cast<AMovableObject>(HitBox)->LaunchObject(750, 500.f);
-		}
-		else if (DifferenceBetween.Size() > 200.f)
-		{
-			Cast<AMovableObject>(HitBox)->LaunchObject(650, 400.f);
-		}
-		else
-		{
-			Cast<AMovableObject>(HitBox)->LaunchObject(500, 300.f);
-		}
+		FVector WhereFrom = Cast<AMainPlayer>(PlayerThatShoot)->StartLineTrace;
+
+		Cast<AMovableObject>(HitBox)->LaunchObject(WhereFrom);
 	}
 }
 

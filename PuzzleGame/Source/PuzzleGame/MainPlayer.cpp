@@ -40,6 +40,12 @@ void AMainPlayer::Tick(float DeltaTime)
 
 	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
 
+	StartLineTrace = (GetActorLocation() + GetActorForwardVector() * 70) - FVector(0.f, 0.f, 100.f);
+	EndLineTrace = (GetActorLocation() + GetActorForwardVector() * 770) - FVector(0.f, 0.f, 100.f);
+	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
+
+	DrawDebugLine(GetWorld(), StartLineTrace, EndLineTrace, FColor::Red, false, 0.f, 0, 5.f);
+
 	if (bShooting)
 	{
 		SetWalkingSpeed(StopMovementSpeed);
@@ -48,17 +54,13 @@ void AMainPlayer::Tick(float DeltaTime)
 	{
 		SetWalkingSpeed(NormalRunningSpeed);
 		RotateTowardsMouse(DeltaTime, XPosition, YPosition);
+
+		GetWorld()->LineTraceSingleByObjectType(Hit, StartLineTrace, EndLineTrace,
+			FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody), TraceParameters);
+
 		bShooting = false;
 	}
 
-	StartLineTrace = GetActorLocation() + GetActorForwardVector() * 100;
-	EndLineTrace = GetActorLocation() + GetActorForwardVector() * 800;
-	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
-
-	DrawDebugLine(GetWorld(), StartLineTrace, EndLineTrace, FColor::Red, false, 0.f, 0, 5.f);
-
-	GetWorld()->LineTraceSingleByObjectType(Hit, StartLineTrace, EndLineTrace, 
-		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody), TraceParameters);
 
 	/*if (Hit.GetActor())
 	{
@@ -107,7 +109,7 @@ void AMainPlayer::Interact()
 	Holding = true;
 	SetWalkingSpeed(200.f);
 
-	// LaunchPlayer();
+	LaunchPlayerTest();
 }
 
 void AMainPlayer::StopInteract()
@@ -154,7 +156,7 @@ void AMainPlayer::Shoot()
 		UWorld* World = GetWorld();
 		if (World)
 		{
-			FVector Location = GetActorLocation() + (GetActorForwardVector() * 100.f);
+			FVector Location = StartLineTrace;
 			FRotator Rotation = GetActorRotation();
 			HookThatWasShoot = World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);
 
@@ -189,6 +191,11 @@ void AMainPlayer::SetWalkingSpeed(float InWalkingSpeed)
 
 void AMainPlayer::LaunchPlayer()
 {
-	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter((GetActorForwardVector() * 800 + FVector(0.f, 0.f, 450.f)), false, false);
+	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter(((Hit.GetActor()->GetActorLocation() - StartLineTrace) * 1.2f + FVector(0.f, 0.f, 350.f)), false, false);
+}
+
+void AMainPlayer::LaunchPlayerTest()
+{
+	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter(((Hit.GetActor()->GetActorLocation() - StartLineTrace) * 1.2f + FVector(0.f, 0.f, 350.f)), false, false);
 }
 

@@ -47,5 +47,5 @@ public:
 
 	void MoveObject(FVector DirectionSpeed);
 
-	void LaunchObject(int inForce, float inHeight);
+	void LaunchObject(FVector StartLocation);
 };
