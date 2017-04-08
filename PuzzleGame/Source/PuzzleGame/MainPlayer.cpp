@@ -4,6 +4,7 @@
 #include "MainPlayer.h"
 #include "Grapplehook.h"
 #include "MovableObject.h"
+#include "GrapplePoint.h"
 
 
 // Sets default values
@@ -46,6 +47,11 @@ void AMainPlayer::Tick(float DeltaTime)
 
 	DrawDebugLine(GetWorld(), StartLineTrace, EndLineTrace, FColor::Red, false, 0.f, 0, 5.f);
 
+	if (Hit.GetActor())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Trace hit: %s"), *Hit.GetActor()->GetName())
+	}
+
 	if (bShooting)
 	{
 		SetWalkingSpeed(StopMovementSpeed);
@@ -60,13 +66,6 @@ void AMainPlayer::Tick(float DeltaTime)
 
 		bShooting = false;
 	}
-
-
-	/*if (Hit.GetActor())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Trace hit: %s"), *Hit.GetActor()->GetName())
-	}*/
-
 
 }
 
@@ -189,9 +188,9 @@ void AMainPlayer::SetWalkingSpeed(float InWalkingSpeed)
 	WalkingSpeed = InWalkingSpeed;
 }
 
-void AMainPlayer::LaunchPlayer()
+void AMainPlayer::LaunchPlayer(FVector HitLocation)
 {
-	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter(((Hit.GetActor()->GetActorLocation() - StartLineTrace) * 1.2f + FVector(0.f, 0.f, 350.f)), false, false);
+	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter(((HitLocation - StartLineTrace) * 1.2f + FVector(0.f, 0.f, 350.f)), false, false);
 }
 
 void AMainPlayer::LaunchPlayerTest()

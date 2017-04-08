@@ -116,12 +116,15 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 		bHitWall = true;
 		CheckDestroy();
 
+		HitBox = OtherActor;
+		FVector Location = Cast<AGrapplePoint>(HitBox)->GetActorLocation();
+
 		if (this)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Difference: %f"), DifferenceBetween.Size())
 		}
 
-		Cast<AMainPlayer>(PlayerThatShoot)->LaunchPlayer();
+		Cast<AMainPlayer>(PlayerThatShoot)->LaunchPlayer(Location);
 	}
 
 	else if (OtherActor->IsA(ALever::StaticClass()))

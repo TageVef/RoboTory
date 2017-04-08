@@ -88,6 +88,6 @@ public:
 	FVector EndLineTrace;
 	FHitResult Hit;
 
-	void LaunchPlayer();
+	void LaunchPlayer(FVector HitLocation);
 	void LaunchPlayerTest();
 };
