@@ -72,5 +72,9 @@ void AMovableObject::MoveObject(FVector DirectionSpeed)
 
 void AMovableObject::LaunchObject(FVector StartLocation)
 {
-	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse((GetActorLocation() - StartLocation) * -1.2 + FVector(0.f, 0.f, 350.f), NAME_None, true);
+	FVector DistanceBetween = StartLocation - GetActorLocation();
+	float UpDistance = DistanceBetween.Size() * 0.47;
+	FVector HowHigh = FVector(0.f, 0.f, UpDistance);
+
+	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse((GetActorLocation() - StartLocation) * -1.4 + HowHigh, NAME_None, true);
 }

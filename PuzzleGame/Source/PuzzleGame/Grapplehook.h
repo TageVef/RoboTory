@@ -64,7 +64,7 @@ public:
 
 	// How far will the grapplehook go before it returns to spawnpoint
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		int DistanceBeforeReturn = 700;
+		int DistanceBeforeReturn = 500;
 
 	void LaunchForward();
 	void LaunchBackwards(bool &bMovingBack);

@@ -90,9 +90,6 @@ void AGrapplehook::LaunchBackwards(bool &bMovingBack)
 {
 	if (bHitWall)
 	{
-		/*ReturnVelocity = TempLocation - SpawnLocation;
-		Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(ReturnVelocity * -1.5, NAME_None, true);
-		UE_LOG(LogTemp, Warning, TEXT("Går bakover på en veldig rar måte!"))*/
 		bHitWall = false;
 
 		CheckDestroy();
@@ -102,7 +99,6 @@ void AGrapplehook::LaunchBackwards(bool &bMovingBack)
 	{
 		Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(LaunchVelocity * -1, NAME_None, true);
 		bMovingBack = true;
-		UE_LOG(LogTemp, Warning, TEXT("Går bakover!"))
 	}
 
 	CheckDestroy();
@@ -142,7 +138,6 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 		bHitWall = true;
 		CheckDestroy();
 		TempLocation = GetActorLocation();
-		UE_LOG(LogTemp, Warning, TEXT("Kolliderte med veggen!"))
 
 		if (this)
 		{
@@ -172,7 +167,7 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 
 void AGrapplehook::CheckDestroy()
 {
-	if (DifferenceBetween.Size() <= 100.f || bHitWall)
+	if (DifferenceBetween.Size() <= 10.f || bHitWall)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Destroy hook!"))
 		this->Destroy();

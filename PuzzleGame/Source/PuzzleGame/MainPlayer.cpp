@@ -41,11 +41,11 @@ void AMainPlayer::Tick(float DeltaTime)
 
 	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
 
-	StartLineTrace = (GetActorLocation() + GetActorForwardVector() * 85) - FVector(0.f, 0.f, 50.f);
-	EndLineTrace = (GetActorLocation() + GetActorForwardVector() * 785) - FVector(0.f, 0.f, 50.f);
+	StartLineTrace = (GetActorLocation() + GetActorForwardVector() * 65) - FVector(0.f, 0.f, 50.f);
+	EndLineTrace = (GetActorLocation() + GetActorForwardVector() * 565) - FVector(0.f, 0.f, 50.f);
 	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
 
-	DrawDebugLine(GetWorld(), StartLineTrace, EndLineTrace, FColor::Red, false, 0.f, 0, 5.f);
+	DrawDebugLine(GetWorld(), StartLineTrace, EndLineTrace, FColor::Red, false, 0.f, 0, 3.f);
 
 	if (Hit.GetActor())
 	{
@@ -190,7 +190,7 @@ void AMainPlayer::SetWalkingSpeed(float InWalkingSpeed)
 
 void AMainPlayer::LaunchPlayer(FVector HitLocation)
 {
-	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter(((HitLocation - StartLineTrace) * 1.2f + FVector(0.f, 0.f, 350.f)), false, false);
+	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter(((HitLocation - StartLineTrace) * 1.3f + FVector(0.f, 0.f, 400.f)), false, false);
 }
 
 void AMainPlayer::LaunchPlayerTest()

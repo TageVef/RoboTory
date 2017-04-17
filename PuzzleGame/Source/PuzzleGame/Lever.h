@@ -32,7 +32,8 @@ private:
 		UStaticMeshComponent* LeverMesh;
 	UPROPERTY(EditAnywhere)
 		AActor* WhatToActivate;
-
+	UPROPERTY(EditAnywhere)
+		AActor* WhatToActivate2;
 
 
 	

@@ -22,6 +22,9 @@ private:
 	AActor* DoorThatOpens;
 
 	UPROPERTY(EditAnywhere)
+	AActor* DoorThatOpens2;
+
+	UPROPERTY(EditAnywhere)
 	AActor* ObjectThatActivates;
 
 	UPROPERTY(EditAnywhere)
