@@ -26,6 +26,4 @@ public:
 		USceneComponent* VisibleComponent;
 	UPROPERTY(EditAnywhere)
 		UShapeComponent* CollisionBox;
-	
-	
 };

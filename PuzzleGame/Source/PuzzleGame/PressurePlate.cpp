@@ -21,8 +21,6 @@ APressurePlate::APressurePlate()
 	// Create TriggerVolume
 	CollisionBox = CreateDefaultSubobject<ATriggerVolume>(TEXT("Collision Box"));
 
-
-
 }
 
 // Called when the game starts or when spawned

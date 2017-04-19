@@ -31,8 +31,6 @@ void AGrapplehook::BeginPlay()
 	LaunchForward();
 	
 	SpawnLocation = GetActorLocation();
-	SpawnRotation = GetActorRotation();
-
 }
 
 // Called every frame
