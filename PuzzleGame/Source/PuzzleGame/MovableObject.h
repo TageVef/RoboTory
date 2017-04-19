@@ -9,7 +9,7 @@ UCLASS()
 class PUZZLEGAME_API AMovableObject : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:	
 	// Sets default values for this actor's properties
 	AMovableObject();
@@ -44,8 +44,6 @@ public:
 	void SetHit(bool asdf);
 	
 	void SetEndLocation(FVector Location);
-
-	void MoveObject(FVector DirectionSpeed);
 
 	void LaunchObject(FVector StartLocation);
 };

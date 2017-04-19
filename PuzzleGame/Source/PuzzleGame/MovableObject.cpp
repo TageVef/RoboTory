@@ -38,6 +38,11 @@ void AMovableObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FVector Location = GetActorLocation();
+	if (Location.Z < -300)
+	{
+		SetActorLocation(StartLocation);
+	}
 
 
 }
@@ -56,18 +61,6 @@ void AMovableObject::SetHit(bool asdf)
 void AMovableObject::SetEndLocation(FVector Location)
 {
 	EndLocation = Location;
-}
-
-void AMovableObject::MoveObject(FVector DirectionSpeed)
-{
-	if (bHit)
-	{
-		FVector Location = GetActorLocation() - (DirectionSpeed);
-
-		// Keeps the same height on the movable objects affected by grapplehook
-		Location.Z = StartLocation.Z;
-		SetActorLocation(Location);
-	}
 }
 
 void AMovableObject::LaunchObject(FVector StartLocation)
