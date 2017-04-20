@@ -25,17 +25,11 @@ public:
 	UPROPERTY(EditAnywhere)
 		USceneComponent* VisibleComponent = nullptr;
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		USkeletalMeshComponent* SkeletonMesh = nullptr;*/
-
-	/*UPROPERTY(EditAnywhere)
-		UShapeComponent* CollisionBox = nullptr;*/
-
 	FVector StartLocation;
 	FVector EndLocation;
 
 	AActor* Grapplehook = nullptr;
-	ACharacter* PlayerCharacter;
+	AActor* PlayerCharacter;
 
 	bool bHit = false;
 

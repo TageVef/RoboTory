@@ -31,6 +31,7 @@ void AGrapplehook::BeginPlay()
 	LaunchForward();
 	
 	SpawnLocation = GetActorLocation();
+
 }
 
 // Called every frame
@@ -157,7 +158,7 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 
 		HitBox = OtherActor;
 
-		FVector WhereFrom = Cast<AMainPlayer>(PlayerThatShoot)->StartLineTrace;
+		FVector WhereFrom = Cast<AMainPlayer>(PlayerThatShoot)->GetActorLocation();
 
 		Cast<AMovableObject>(HitBox)->LaunchObject(WhereFrom);
 	}
@@ -165,7 +166,7 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 
 void AGrapplehook::CheckDestroy()
 {
-	if (DifferenceBetween.Size() <= 10.f || bHitWall)
+	if (DifferenceBetween.Size() <= 60.f || bHitWall)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Destroy hook!"))
 		this->Destroy();

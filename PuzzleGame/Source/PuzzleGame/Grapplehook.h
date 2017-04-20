@@ -60,7 +60,7 @@ public:
 
 	// The speed of the grapplehook
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		int Speed = 1300;
+		int Speed = 1800;
 
 	// How far will the grapplehook go before it returns to spawnpoint
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
