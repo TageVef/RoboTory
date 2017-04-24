@@ -50,7 +50,7 @@ void AMainPlayer::Tick(float DeltaTime)
 		UE_LOG(LogTemp, Warning, TEXT("Trace hit: %s"), *Hit.GetActor()->GetName())
 	}
 
-	if (bShooting)
+	if (bShooting || bReadingSign)
 	{
 		SetWalkingSpeed(StopMovementSpeed);
 	}
@@ -75,7 +75,7 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	// Setting up Action bindings
 	InputComponent->BindAction("Climb", IE_Pressed, this, &AMainPlayer::Climb);
 	InputComponent->BindAction("Interact", IE_Pressed, this, &AMainPlayer::Interact);
-	InputComponent->BindAction("Interact", IE_Released, this, &AMainPlayer::StopInteract);
+	// InputComponent->BindAction("Interact", IE_Released, this, &AMainPlayer::StopInteract);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &AMainPlayer::Shoot);
 	InputComponent->BindAction("AlternateShoot", IE_Pressed, this, &AMainPlayer::AlternateShoot);
 
@@ -103,16 +103,16 @@ void AMainPlayer::Climb()
 
 void AMainPlayer::Interact()
 {
-	Holding = true;
-	SetWalkingSpeed(200.f);
+	if (bCanReadSign)
+	{
+		bReadingSign = !bReadingSign;
 
-	LaunchPlayerTest();
+	}
 }
 
 void AMainPlayer::StopInteract()
 {
-	Holding = false;
-	SetWalkingSpeed(400.f);
+	bReadingSign = false;
 }
 
 

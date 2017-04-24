@@ -88,6 +88,9 @@ public:
 	FVector EndLineTrace;
 	FHitResult Hit;
 
+	bool bCanReadSign = false;
+	bool bReadingSign = false;
+
 	void LaunchPlayer(FVector HitLocation);
 	void LaunchPlayerTest();
 };

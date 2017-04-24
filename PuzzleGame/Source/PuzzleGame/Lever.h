@@ -34,6 +34,10 @@ private:
 		AActor* WhatToActivate;
 	UPROPERTY(EditAnywhere)
 		AActor* WhatToActivate2;
+	UPROPERTY(EditAnywhere)
+		AActor* WhatToActivate3;
+	UPROPERTY(EditAnywhere)
+		AActor* WhatToActivate4;
 
 
 	

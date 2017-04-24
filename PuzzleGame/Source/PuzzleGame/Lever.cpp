@@ -51,6 +51,30 @@ void ALever::Tick(float DeltaTime)
 			Cast<ADoor>(WhatToActivate2)->CloseDoor();
 		}
 	}
+
+	if (WhatToActivate3)
+	{
+		if (bHit)
+		{
+			Cast<ADoor>(WhatToActivate3)->OpenDoor();
+		}
+		else
+		{
+			Cast<ADoor>(WhatToActivate3)->CloseDoor();
+		}
+	}
+
+	if (WhatToActivate4)
+	{
+		if (bHit)
+		{
+			Cast<ADoor>(WhatToActivate4)->OpenDoor();
+		}
+		else
+		{
+			Cast<ADoor>(WhatToActivate4)->CloseDoor();
+		}
+	}
 }
 
 void ALever::FlipHit()
