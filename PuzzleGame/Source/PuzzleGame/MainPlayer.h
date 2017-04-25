@@ -83,10 +83,12 @@ private:
 public:
 
 	AActor* HookThatWasShoot = nullptr;
+	UPROPERTY(BlueprintReadWrite)
 	bool bShooting = false;
 	FVector StartLineTrace;
 	FVector EndLineTrace;
 	FHitResult Hit;
+	FVector WhereIsHook;
 
 	bool bCanReadSign = false;
 	bool bReadingSign = false;

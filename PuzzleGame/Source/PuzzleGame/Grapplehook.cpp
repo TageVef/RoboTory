@@ -31,6 +31,7 @@ void AGrapplehook::BeginPlay()
 	LaunchForward();
 	
 	SpawnLocation = GetActorLocation();
+	FVector WhereIsPlayer = Cast<AMainPlayer>(PlayerThatShoot)->GetActorLocation();
 
 }
 
@@ -159,8 +160,9 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 		HitBox = OtherActor;
 
 		FVector WhereFrom = Cast<AMainPlayer>(PlayerThatShoot)->GetActorLocation();
-
+		
 		Cast<AMovableObject>(HitBox)->LaunchObject(WhereFrom);
+		WhereAmI = GetActorLocation();
 	}
 }
 

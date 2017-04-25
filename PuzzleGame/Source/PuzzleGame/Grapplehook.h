@@ -70,6 +70,11 @@ public:
 	void LaunchBackwards(bool &bMovingBack);
 	void CheckDestroy();
 
+	UPROPERTY(BlueprintReadWrite)
+		FVector WhereAmI;
+	UPROPERTY(BlueprintReadWrite)
+		FVector WhereIsPlayer;
+
 
 	UFUNCTION()
 		void OnHit(AActor* SelfActor, AActor* OtherActor, 
