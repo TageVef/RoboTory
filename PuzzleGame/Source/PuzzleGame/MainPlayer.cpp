@@ -149,6 +149,7 @@ void AMainPlayer::Shoot()
 	if (!bShooting)
 	{
 		bShooting = true;
+		StartCameraShake();
 
 		UWorld* World = GetWorld();
 		if (World)
@@ -178,3 +179,7 @@ void AMainPlayer::LaunchPlayerTest()
 	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter(((Hit.GetActor()->GetActorLocation() - StartLineTrace) * 1.2f + FVector(0.f, 0.f, 350.f)), false, false);
 }
 
+void AMainPlayer::StartCameraShake_Implementation()
+{
+
+}

@@ -31,9 +31,6 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		USpringArmComponent* CameraBoom = nullptr;
 
-	UPROPERTY(VisibleAnywhere)
-		UCameraComponent* PlayerCamera = nullptr;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UDecalComponent* CursorToWorld;
 
@@ -76,23 +73,25 @@ private:
 
 	void Shoot();
 
-	void AlternateShoot();
-
 	void SetWalkingSpeed(float InWalkingSpeed);
 
 public:
 
 	AActor* HookThatWasShoot = nullptr;
-	UPROPERTY(BlueprintReadWrite)
-	bool bShooting = false;
 	FVector StartLineTrace;
 	FVector EndLineTrace;
 	FHitResult Hit;
 	FVector WhereIsHook;
-
+	bool bShooting = false;
 	bool bCanReadSign = false;
 	bool bReadingSign = false;
 
 	void LaunchPlayer(FVector HitLocation);
 	void LaunchPlayerTest();
+
+	UPROPERTY(EditAnywhere ,BlueprintReadWrite)
+		UCameraComponent* PlayerCamera = nullptr;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+		void StartCameraShake();
 };
