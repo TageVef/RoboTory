@@ -43,7 +43,8 @@ void AMainPlayer::Tick(float DeltaTime)
 	EndLineTrace = (GetActorLocation() + GetActorForwardVector() * 600) - FVector(0.f, 0.f, 50.f);
 	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
 
-	DrawDebugLine(GetWorld(), StartLineTrace, EndLineTrace, FColor::Black, false, 0.f, 0, 5.f);
+	// DrawDebugLine(GetWorld(), StartLineTrace, EndLineTrace, FColor::Black, false, 0.f, 0, 5.f);
+
 
 	if (Hit.GetActor())
 	{
@@ -75,9 +76,7 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	// Setting up Action bindings
 	InputComponent->BindAction("Climb", IE_Pressed, this, &AMainPlayer::Climb);
 	InputComponent->BindAction("Interact", IE_Pressed, this, &AMainPlayer::Interact);
-	// InputComponent->BindAction("Interact", IE_Released, this, &AMainPlayer::StopInteract);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &AMainPlayer::Shoot);
-	InputComponent->BindAction("AlternateShoot", IE_Pressed, this, &AMainPlayer::AlternateShoot);
 
 	//Setting up Axis bindings
 	InputComponent->BindAxis("MoveX", this, &AMainPlayer::MoveX);
@@ -101,6 +100,7 @@ void AMainPlayer::Climb()
 	GetWorld()->GetFirstPlayerController()->GetCharacter()->Jump();
 }
 
+// Was supposed to click on text signs to read tutorial information. Not finished.
 void AMainPlayer::Interact()
 {
 	if (bCanReadSign)
@@ -161,24 +161,6 @@ void AMainPlayer::Shoot()
 		}
 	}
 	
-}
-
-void AMainPlayer::AlternateShoot()
-{
-	/*if (!bShooting)
-	{
-		bShooting = true;
-
-		UWorld* World = GetWorld();
-		if (World)
-		{
-			FVector Location = GetActorLocation() + GetActorForwardVector() * 100.f;
-			FRotator Rotation = GetActorRotation();
-			HookThatWasShoot = World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);
-
-			Cast<AGrapplehook>(HookThatWasShoot)->PlayerThatShoot = this;
-		}
-	}*/
 }
 
 void AMainPlayer::SetWalkingSpeed(float InWalkingSpeed)

@@ -43,31 +43,16 @@ void AMovableObject::Tick(float DeltaTime)
 	{
 		SetActorLocation(StartLocation);
 	}
-
-
 }
 
-bool AMovableObject::GetHit()
-{
-	return bHit;
-}
-
-void AMovableObject::SetHit(bool asdf)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Hit er satt"))
-	bHit = asdf;
-}
-
-void AMovableObject::SetEndLocation(FVector Location)
-{
-	EndLocation = Location;
-}
 
 void AMovableObject::LaunchObject(FVector StartLocation)
 {
+	// Find the distance between the player and the box, add height based on distance.
 	FVector DistanceBetween = StartLocation - GetActorLocation();
 	float UpDistance = DistanceBetween.Size() * 0.47;
 	FVector HowHigh = FVector(0.f, 0.f, UpDistance);
 
+	// Use the vectors above to launch the object towards the player.
 	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse((StartLocation - GetActorLocation()) + HowHigh, NAME_None, true);
 }

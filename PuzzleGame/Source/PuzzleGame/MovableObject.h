@@ -26,18 +26,9 @@ public:
 		USceneComponent* VisibleComponent = nullptr;
 
 	FVector StartLocation;
-	FVector EndLocation;
 
 	AActor* Grapplehook = nullptr;
 	AActor* PlayerCharacter;
-
-	bool bHit = false;
-
-	bool GetHit();
-
-	void SetHit(bool asdf);
-	
-	void SetEndLocation(FVector Location);
 
 	void LaunchObject(FVector StartLocation);
 };
