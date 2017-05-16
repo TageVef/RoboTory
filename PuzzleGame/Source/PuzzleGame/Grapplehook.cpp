@@ -107,6 +107,9 @@ void AGrapplehook::LaunchBackwards(bool &bMovingBack)
 
 void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector NormalImpulse, const FHitResult & Hit)
 {
+	// Play hitsound
+	UGameplayStatics::PlaySound2D(GetWorld(), HitSound, 1.f, 1.f, 0.f);
+
 	if (OtherActor->IsA(AGrapplePoint::StaticClass()))
 	{
 		bHitWall = true;

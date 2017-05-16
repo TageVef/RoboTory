@@ -150,6 +150,8 @@ void AMainPlayer::Shoot()
 	{
 		bShooting = true;
 		StartCameraShake();
+		// Play shootsound
+		UGameplayStatics::PlaySound2D(GetWorld(), ShootSound, 1.f, 1.f, 0.f);
 
 		UWorld* World = GetWorld();
 		if (World)

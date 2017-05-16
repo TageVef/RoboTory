@@ -24,6 +24,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		USceneComponent* VisibleComponent = nullptr;
+	UPROPERTY(EditAnywhere)
+		UShapeComponent* CollisionBox;
 
 	FVector StartLocation;
 

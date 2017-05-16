@@ -94,4 +94,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 		void StartCameraShake();
+
+	UPROPERTY(EditAnywhere)
+		USoundBase* ShootSound;
+	
 };

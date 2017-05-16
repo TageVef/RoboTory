@@ -74,7 +74,8 @@ public:
 		FVector WhereAmI;
 	UPROPERTY(BlueprintReadWrite)
 		FVector WhereIsPlayer;
-
+	UPROPERTY(EditAnywhere)
+		USoundBase* HitSound;
 
 	UFUNCTION()
 		void OnHit(AActor* SelfActor, AActor* OtherActor, 

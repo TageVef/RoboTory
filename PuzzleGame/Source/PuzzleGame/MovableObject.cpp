@@ -13,7 +13,9 @@ AMovableObject::AMovableObject()
 	PrimaryActorTick.bCanEverTick = true;
 
 	VisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleComponent"));
-	VisibleComponent->SetupAttachment(RootComponent);
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
+	CollisionBox->SetupAttachment(RootComponent);
+	VisibleComponent->SetupAttachment(CollisionBox);
 
 	// SkeletonMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMeshComponent"));
 	// SkeletonMesh->SetupAttachment(RootComponent);
