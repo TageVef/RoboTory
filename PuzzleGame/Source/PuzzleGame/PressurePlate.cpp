@@ -4,6 +4,7 @@
 #include "PressurePlate.h"
 #include "Door.h"
 #include "MovableObject.h"
+#include "MainExitDoor.h"
 
 
 // Sets default values
@@ -66,6 +67,21 @@ void APressurePlate::Tick(float DeltaTime)
 		else
 		{
 			Cast<ADoor>(DoorThatOpens2)->CloseDoor();
+		}
+	}
+
+	if (MainExitDoor)
+	{
+		if (CollisionBox->IsOverlappingActor(ObjectThatActivates) ||
+			CollisionBox->IsOverlappingActor(ObjectThatActivates2) ||
+			CollisionBox->IsOverlappingActor(ObjectThatActivates3) ||
+			(PlayerCanActivate && CollisionBox->IsOverlappingActor(PlayerCharacter)))
+		{
+			Cast<AMainExitDoor>(MainExitDoor)->OpenDoor();
+		}
+		else
+		{
+			Cast<AMainExitDoor>(MainExitDoor)->CloseDoor();
 		}
 	}
 }

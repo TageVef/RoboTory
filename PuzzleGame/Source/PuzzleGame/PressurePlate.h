@@ -19,6 +19,9 @@ private:
 	ATriggerVolume* CollisionBox;
 
 	UPROPERTY(EditAnywhere)
+	AActor* MainExitDoor;
+
+	UPROPERTY(EditAnywhere)
 	AActor* DoorThatOpens;
 
 	UPROPERTY(EditAnywhere)
