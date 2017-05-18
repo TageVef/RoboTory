@@ -82,7 +82,9 @@ public:
 	FVector EndLineTrace;
 	FHitResult Hit;
 	FVector WhereIsHook;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Animation")
 	bool bShooting = false;
+
 	bool bCanReadSign = false;
 	bool bReadingSign = false;
 
