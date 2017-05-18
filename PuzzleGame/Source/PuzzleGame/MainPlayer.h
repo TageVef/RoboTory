@@ -37,64 +37,36 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Grapplehook")
 		TSubclassOf<class AGrapplehook> GrapplehookBlueprint;
 
-	/// Is this in use?
-	UPROPERTY(VisibleAnywhere)
-		TSubclassOf<class AMovableObject> DragBox;
-
 	UPROPERTY(EditAnywhere)
 		float RotateSpeed = 350.f;
-
-	AActor* MovableObject = nullptr;
 	
 	float XPosition;
 	float YPosition;
 
 	UPROPERTY(EditAnywhere)
-		float NormalRunningSpeed = 300.f;
+	float NormalRunningSpeed = 300.f;
+	float const MaxWalkingSpeed = 300.f;
 	float const StopMovementSpeed = 0.f;
-	float WalkingSpeed = NormalRunningSpeed;
-
-	FVector WalkingVector = GetActorForwardVector() * (WalkingSpeed);
-	bool Holding = false;
-	float ShootTimer = 1.f;
-
 
 	void MoveX(float AxisValue);
-
 	void MoveY(float AxisValue);
-
 	void Climb();
-
-	void Interact();
-
-	void StopInteract();
-
 	void RotateTowardsMouse(float DeltaTime, float XPos, float YPos);
-
 	void Shoot();
-
 	void SetWalkingSpeed(float InWalkingSpeed);
 
 public:
 
 	AActor* HookThatWasShoot = nullptr;
-	FVector StartLineTrace;
-	FVector EndLineTrace;
+	FVector SpawnPoint;
 	FHitResult Hit;
-	FVector WhereIsHook;
 	bool bShooting = false;
-	bool bCanReadSign = false;
-	bool bReadingSign = false;
-
 	void LaunchPlayer(FVector HitLocation);
-	void LaunchPlayerTest();
 
 	UPROPERTY(EditAnywhere ,BlueprintReadWrite)
 		UCameraComponent* PlayerCamera = nullptr;
-
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 		void StartCameraShake();
-
 	UPROPERTY(EditAnywhere)
 		USoundBase* ShootSound;
 	

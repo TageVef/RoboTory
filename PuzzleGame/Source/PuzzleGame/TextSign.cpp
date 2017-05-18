@@ -30,25 +30,5 @@ void ATextSign::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (TriggerComponent)
-	{
-
-		if (TriggerComponent->IsOverlappingActor(PlayerCharacter))
-		{
-			Cast<AMainPlayer>(PlayerCharacter)->bCanReadSign = true;
-
-			if (Cast<AMainPlayer>(PlayerCharacter)->bReadingSign)
-			{
-
-			}
-		}
-
-		else if (!TriggerComponent->IsOverlappingActor(PlayerCharacter))
-		{
-			Cast<AMainPlayer>(PlayerCharacter)->bCanReadSign = false;
-		}
-
-	}
-
 }
 

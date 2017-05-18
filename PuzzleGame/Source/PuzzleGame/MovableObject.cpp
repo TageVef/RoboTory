@@ -48,13 +48,13 @@ void AMovableObject::Tick(float DeltaTime)
 }
 
 
-void AMovableObject::LaunchObject(FVector StartLocation)
+void AMovableObject::LaunchObject(FVector LaunchLocation)
 {
 	// Find the distance between the player and the box, add height based on distance.
-	FVector DistanceBetween = StartLocation - GetActorLocation();
+	FVector DistanceBetween = LaunchLocation - GetActorLocation();
 	float UpDistance = DistanceBetween.Size() * 0.47;
 	FVector HowHigh = FVector(0.f, 0.f, UpDistance);
 
 	// Use the vectors above to launch the object towards the player.
-	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse((StartLocation - GetActorLocation()) + HowHigh, NAME_None, true);
+	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse((LaunchLocation - GetActorLocation()) + HowHigh, NAME_None, true);
 }

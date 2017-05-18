@@ -24,7 +24,7 @@ void ADoor::BeginPlay()
 }
 
 // Called every frame
-void ADoor::Tick(float DeltaTime)
+void ADoor::Tick(float DeltaTime) //Moves the door every frame.
 {
 	Super::Tick(DeltaTime);
 
@@ -49,7 +49,8 @@ void ADoor::Tick(float DeltaTime)
 
 }
 
-void ADoor::OpenDoor()
+
+void ADoor::OpenDoor() //setting movement in the direction it is suppose to go.
 {
 	if (MoveDirectionX)
 	{
@@ -68,7 +69,7 @@ void ADoor::OpenDoor()
 	
 }
 
-void ADoor::CloseDoor()
+void ADoor::CloseDoor() //setting direction for the oppisit direction
 {
 	if (MoveDirectionX)
 	{

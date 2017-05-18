@@ -3,7 +3,6 @@
 #include "PuzzleGame.h"
 #include "MainPlayer.h"
 #include "Grapplehook.h"
-#include "MovableObject.h"
 #include "GrapplePoint.h"
 
 
@@ -12,12 +11,9 @@ AMainPlayer::AMainPlayer()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
-
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Boom"));
-
 	CameraBoom->SetupAttachment(RootComponent);
 	PlayerCamera->SetupAttachment(CameraBoom);
 
@@ -27,7 +23,6 @@ AMainPlayer::AMainPlayer()
 void AMainPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-
 	// Shows mouse cursor so you see where you aim (rotate)
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 }
@@ -37,35 +32,18 @@ void AMainPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = NormalRunningSpeed;
 
-	StartLineTrace = (GetActorLocation() + GetActorForwardVector() * 100) - FVector(0.f, 0.f, 50.f);
-	EndLineTrace = (GetActorLocation() + GetActorForwardVector() * 600) - FVector(0.f, 0.f, 50.f);
-	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
-
-	// DrawDebugLine(GetWorld(), StartLineTrace, EndLineTrace, FColor::Black, false, 0.f, 0, 5.f);
-
-
-	if (Hit.GetActor())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Trace hit: %s"), *Hit.GetActor()->GetName())
-	}
-
-	if (bShooting || bReadingSign)
+	if (bShooting)
 	{
 		SetWalkingSpeed(StopMovementSpeed);
 	}
 	else
 	{
-		SetWalkingSpeed(NormalRunningSpeed);
+		SetWalkingSpeed(MaxWalkingSpeed);
 		RotateTowardsMouse(DeltaTime, XPosition, YPosition);
-
-		GetWorld()->LineTraceSingleByObjectType(Hit, StartLineTrace, EndLineTrace,
-			FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody), TraceParameters);
-
 		bShooting = false;
 	}
-
 }
 
 // Called to bind functionality to input
@@ -75,7 +53,6 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	// Setting up Action bindings
 	InputComponent->BindAction("Climb", IE_Pressed, this, &AMainPlayer::Climb);
-	InputComponent->BindAction("Interact", IE_Pressed, this, &AMainPlayer::Interact);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &AMainPlayer::Shoot);
 
 	//Setting up Axis bindings
@@ -99,22 +76,6 @@ void AMainPlayer::Climb()
 {
 	GetWorld()->GetFirstPlayerController()->GetCharacter()->Jump();
 }
-
-// Was supposed to click on text signs to read tutorial information. Not finished.
-void AMainPlayer::Interact()
-{
-	if (bCanReadSign)
-	{
-		bReadingSign = !bReadingSign;
-
-	}
-}
-
-void AMainPlayer::StopInteract()
-{
-	bReadingSign = false;
-}
-
 
 void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 {
@@ -141,7 +102,6 @@ void AMainPlayer::RotateTowardsMouse(float DeltaTime, float XPos, float YPos)
 
 	//Rotate towards mouse cursor
 	GetWorld()->GetFirstPlayerController()->SetControlRotation(NewRotation);
-
 }
 
 void AMainPlayer::Shoot()
@@ -156,7 +116,8 @@ void AMainPlayer::Shoot()
 		UWorld* World = GetWorld();
 		if (World)
 		{
-			FVector Location = StartLineTrace;
+			SpawnPoint = GetActorLocation() + (GetActorForwardVector() * 100.0f);
+			FVector Location = SpawnPoint;
 			FRotator Rotation = GetActorRotation();
 			HookThatWasShoot = World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);
 
@@ -168,20 +129,15 @@ void AMainPlayer::Shoot()
 
 void AMainPlayer::SetWalkingSpeed(float InWalkingSpeed)
 {
-	WalkingSpeed = InWalkingSpeed;
+	NormalRunningSpeed = InWalkingSpeed;
 }
 
 void AMainPlayer::LaunchPlayer(FVector HitLocation)
 {
-	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter(((HitLocation - StartLineTrace) * 1.3f + FVector(0.f, 0.f, 400.f)), false, false);
+	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter(((HitLocation - SpawnPoint) * 1.3f + FVector(0.f, 0.f, 400.f)), false, false);
 }
 
-void AMainPlayer::LaunchPlayerTest()
-{
-	GetWorld()->GetFirstPlayerController()->GetCharacter()->LaunchCharacter(((Hit.GetActor()->GetActorLocation() - StartLineTrace) * 1.2f + FVector(0.f, 0.f, 350.f)), false, false);
-}
-
-void AMainPlayer::StartCameraShake_Implementation()
+void AMainPlayer::StartCameraShake_Implementation() //Function here, but implementation in Blueprint
 {
 
 }
