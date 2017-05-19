@@ -21,16 +21,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(EditAnywhere)
-		USceneComponent* VisibleComponent = nullptr;
-	UPROPERTY(EditAnywhere)
-		ATriggerVolume* TriggerComponent = nullptr;
-
-	AActor* PlayerCharacter = nullptr;
-
-	UPROPERTY(BlueprintReadWrite)
-		bool FirstSignIsPressed = false;
 	
 	
 };

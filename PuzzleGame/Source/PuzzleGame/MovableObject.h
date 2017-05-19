@@ -29,8 +29,5 @@ public:
 
 	FVector StartLocation;
 
-	AActor* Grapplehook = nullptr;
-	AActor* PlayerCharacter;
-
 	void LaunchObject(FVector StartLocation);
 };

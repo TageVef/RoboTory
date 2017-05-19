@@ -11,10 +11,6 @@ ATextSign::ATextSign()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	VisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleComponent"));
-	VisibleComponent->SetupAttachment(RootComponent);
-	TriggerComponent = CreateDefaultSubobject<ATriggerVolume>(TEXT("TriggerVolume"));
-
 
 }
 
@@ -22,7 +18,6 @@ ATextSign::ATextSign()
 void ATextSign::BeginPlay()
 {
 	Super::BeginPlay();
-	PlayerCharacter = GetWorld()->GetFirstPlayerController()->GetCharacter();
 }
 
 // Called every frame

@@ -39,11 +39,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	bool PlayerCanActivate = false;
 
-	/*UPROPERTY(EditAnywhere)
-	bool AnyMovableObjectCanActivate = false;*/
-
 	AActor* PlayerCharacter;
-	//	AActor* MoveObject;
 	
 public:	
 	// Sets default values for this actor's properties

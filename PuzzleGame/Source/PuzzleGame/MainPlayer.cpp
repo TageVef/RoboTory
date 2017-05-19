@@ -116,7 +116,7 @@ void AMainPlayer::Shoot()
 		UWorld* World = GetWorld();
 		if (World)
 		{
-			SpawnPoint = GetActorLocation() + (GetActorForwardVector() * 100.0f);
+			SpawnPoint = GetActorLocation() + (GetActorForwardVector() * 100.0f) - FVector(0.f, 0.f, 50.f);
 			FVector Location = SpawnPoint;
 			FRotator Rotation = GetActorRotation();
 			HookThatWasShoot = World->SpawnActor<AGrapplehook>(GrapplehookBlueprint, Location, Rotation);

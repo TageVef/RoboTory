@@ -12,13 +12,10 @@ APressurePlate::APressurePlate()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 	// Create Root Component
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
-
 	// Create Mesh Component
 	PressurePlateMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Pressure Plate Mesh"));
-
 	// Create TriggerVolume
 	CollisionBox = CreateDefaultSubobject<ATriggerVolume>(TEXT("Collision Box"));
 
@@ -28,9 +25,7 @@ APressurePlate::APressurePlate()
 void APressurePlate::BeginPlay()
 {
 	Super::BeginPlay();
-
 	PlayerCharacter = GetWorld()->GetFirstPlayerController()->GetCharacter();
-	// MoveObject = Cast<AMovableObject>(MoveObject);
 }
 
 // Called every frame
