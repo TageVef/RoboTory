@@ -60,17 +60,11 @@ public:
 	AActor* HookThatWasShoot = nullptr;
 	FVector SpawnPoint;
 	FHitResult Hit;
-<<<<<<< HEAD
+
 	FVector WhereIsHook;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Animation")
 	bool bShooting = false;
 
-	bool bCanReadSign = false;
-	bool bReadingSign = false;
-
-=======
-	bool bShooting = false;
->>>>>>> CleanUp
 	void LaunchPlayer(FVector HitLocation);
 
 	UPROPERTY(EditAnywhere ,BlueprintReadWrite)
