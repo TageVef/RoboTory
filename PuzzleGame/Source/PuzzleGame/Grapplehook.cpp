@@ -14,8 +14,6 @@ AGrapplehook::AGrapplehook()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	
 }
 
 // Called when the game starts or when spawned
@@ -24,14 +22,13 @@ void AGrapplehook::BeginPlay()
 	Super::BeginPlay();
 
 	CollisionBox = FindComponentByClass<USphereComponent>();
-	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AGrapplehook::OnOverlap);
 	this->OnActorHit.AddDynamic(this, &AGrapplehook::OnHit);
 
-	LaunchVelocity = GetActorForwardVector() * Speed;
+	LaunchVelocity = GetActorForwardVector() * Speed; //Launches the Hook in forward direction on spawn
 	LaunchForward();
 	
 	SpawnLocation = GetActorLocation();
-	FVector WhereIsPlayer = Cast<AMainPlayer>(PlayerThatShoot)->GetActorLocation();
+	
 
 }
 
@@ -56,53 +53,27 @@ void AGrapplehook::Tick(float DeltaTime)
 	{
 		CheckDestroy();
 	}
-
-	
-	
 }
 
 
-void AGrapplehook::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep,
-	const FHitResult &Sweepresult)
-{
-	//if (OtherActor->IsRootComponentStatic())
-	//{
-	//	HitBox = OtherActor;
-	//}
-
-	//if (OtherActor->IsA(AMovableObject::StaticClass()))
-	//{
-	//	HitBox = OtherActor;
-	//	UE_LOG(LogTemp, Warning, TEXT("Den traff"))
-	//	Cast<AMovableObject>(HitBox)->SetHit(true);
-	//	FVector Offset = GetActorLocation() + (GetActorForwardVector() * 50.0f);
-	//	OtherActor->SetActorLocation(Offset);
-	//}
-}
-
-void AGrapplehook::LaunchForward()
+void AGrapplehook::LaunchForward() //Launches the hook forward
 {
 	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(LaunchVelocity, NAME_None, true);
 }
 
-void AGrapplehook::LaunchBackwards(bool &bMovingBack)
+void AGrapplehook::LaunchBackwards(bool &bMovingBack) //Launches the hook backwards
 {
 	if (bHitWall)
 	{
 		bHitWall = false;
-
 		CheckDestroy();
 	}
-
 	else
 	{
 		Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(LaunchVelocity * -1, NAME_None, true);
 		bMovingBack = true;
 	}
-
 	CheckDestroy();
-	
 }
 
 void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector NormalImpulse, const FHitResult & Hit)
@@ -110,70 +81,41 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 	// Play hitsound
 	UGameplayStatics::PlaySound2D(GetWorld(), HitSound, 1.f, 1.f, 0.f);
 
-	if (OtherActor->IsA(AGrapplePoint::StaticClass()))
+	if (OtherActor->IsA(AGrapplePoint::StaticClass())) //if hit by GrapplePoint
 	{
 		bHitWall = true;
 		CheckDestroy();
-
 		HitBox = OtherActor;
-		FVector Location = Cast<AGrapplePoint>(HitBox)->GetActorLocation();
-
-		if (this)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Difference: %f"), DifferenceBetween.Size())
-		}
-
-		Cast<AMainPlayer>(PlayerThatShoot)->LaunchPlayer(Location);
+		Location = Cast<AGrapplePoint>(HitBox)->GetActorLocation();
+		Cast<AMainPlayer>(PlayerThatShoot)->LaunchPlayer(Location); //Launch Player towards GrapplePoint
 	}
-
-	else if (OtherActor->IsA(ALever::StaticClass()))
+	else if (OtherActor->IsA(ALever::StaticClass())) //if Lever
 	{
 		bHitWall = true;
 		CheckDestroy();
-
 		HitBox = OtherActor;
-
-		Cast<ALever>(HitBox)->FlipHit();
+		Cast<ALever>(HitBox)->FlipHit(); //Flip the switch
 	}
-
-	else if (!OtherActor->IsA(AMovableObject::StaticClass()))
-	{
-		bHitWall = true;
-		CheckDestroy();
-		TempLocation = GetActorLocation();
-
-		if (this)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Difference: %f"), DifferenceBetween.Size())
-		}
-
-		LaunchBackwards(bMovingBack);
-	}
-
-	else
+	else if (OtherActor->IsA(AMovableObject::StaticClass())) //if MoveableObject
 	{
 		bHitWall = true;	
 		CheckDestroy();
-
-		if (this)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Difference: %f"), DifferenceBetween.Size())
-		}
-
 		HitBox = OtherActor;
-
-		FVector WhereFrom = Cast<AMainPlayer>(PlayerThatShoot)->GetActorLocation();
-		
-		Cast<AMovableObject>(HitBox)->LaunchObject(WhereFrom);
-		WhereAmI = GetActorLocation();
+		FVector WhereIsPlayer = Cast<AMainPlayer>(PlayerThatShoot)->GetActorLocation();
+		Cast<AMovableObject>(HitBox)->LaunchObject(WhereIsPlayer);	//Launch the object towards the player
+	}
+	else //if anything else (mostly walls)
+	{
+		bHitWall = true;
+		CheckDestroy(); //destroy
+		LaunchBackwards(bMovingBack);
 	}
 }
 
-void AGrapplehook::CheckDestroy()
+void AGrapplehook::CheckDestroy() //checks if it should destroy itself or not
 {
 	if (DifferenceBetween.Size() <= 60.f || bHitWall)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Destroy hook!"))
 		this->Destroy();
 		bMovingBack = false;
 		Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;

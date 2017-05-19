@@ -22,56 +22,22 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:
-
-	AActor* HitBox = nullptr;
-	FVector Movement;
-	FVector NewLocation;
-
-	ACharacter* PlayerCharacter;
-	FVector PCMovement;
-	FVector PCNewLocation;
-
-	UFUNCTION()
-		void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
-			UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, 
-			const FHitResult &Sweepresult);
-
-public:
 	UPROPERTY(EditAnywhere)
 	UShapeComponent* CollisionBox;
-
-	AActor* PlayerThatShoot = nullptr;
-	AActor* ActorHit = nullptr;
-	FVector LaunchVelocity;
-	FVector ReturnVelocity;
-
-	// Alot of locations. Dont know if theyre all in use
-	FVector SpawnLocation;
-	FVector ReturnLocation;
-	FRotator SpawnRotation;
-	FVector DifferenceBetween;
-	FVector Location;
-	FVector TempLocation;
-	FVector CollisionLocation;
-
-	bool bMovingBack = false;
-	bool bHitWall = false;
-
 	// The speed of the grapplehook
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		int Speed = 1800;
-
 	// How far will the grapplehook go before it returns to spawnpoint
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		int DistanceBeforeReturn = 500;
+
+	AActor* PlayerThatShoot = nullptr;
+	AActor* ActorHit = nullptr;
 
 	void LaunchForward();
 	void LaunchBackwards(bool &bMovingBack);
 	void CheckDestroy();
 
-	UPROPERTY(BlueprintReadWrite)
-		FVector WhereAmI;
 	UPROPERTY(BlueprintReadWrite)
 		FVector WhereIsPlayer;
 	UPROPERTY(EditAnywhere)
@@ -81,4 +47,14 @@ public:
 		void OnHit(AActor* SelfActor, AActor* OtherActor, 
 			FVector NormalImpulse, const FHitResult& Hit);
 
+private:
+	AActor* HitBox = nullptr;
+	FVector Movement;
+	FVector LaunchVelocity;
+	FVector SpawnLocation;
+	FVector DifferenceBetween;
+	FVector Location;
+
+	bool bMovingBack = false;
+	bool bHitWall = false;
 };
