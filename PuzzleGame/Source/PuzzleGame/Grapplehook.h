@@ -35,7 +35,6 @@ public:
 	AActor* ActorHit = nullptr;
 
 	void LaunchForward();
-	void LaunchBackwards(bool &bMovingBack);
 	void CheckDestroy();
 
 	UPROPERTY(BlueprintReadWrite)

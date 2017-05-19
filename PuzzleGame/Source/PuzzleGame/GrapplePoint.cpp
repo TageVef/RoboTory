@@ -10,10 +10,10 @@ AGrapplePoint::AGrapplePoint()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	VisibleComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleComponent"));
-	VisibleComponent->SetupAttachment(RootComponent);
-
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
+	SkeletalComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
+	CollisionBox->SetupAttachment(RootComponent);
+	SkeletalComponent->SetupAttachment(CollisionBox);
 }
 
 // Called when the game starts or when spawned

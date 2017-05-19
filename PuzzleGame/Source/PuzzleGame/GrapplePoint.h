@@ -23,7 +23,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere)
-		USceneComponent* VisibleComponent;
-	UPROPERTY(EditAnywhere)
 		UShapeComponent* CollisionBox;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USkeletalMeshComponent* SkeletalComponent;
 };

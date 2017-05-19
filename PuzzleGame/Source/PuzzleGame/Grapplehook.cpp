@@ -42,10 +42,11 @@ void AGrapplehook::Tick(float DeltaTime)
 	// Find the difference between the vectors
 	DifferenceBetween = Location - SpawnLocation;
 
-	// If the lenght between them is greater than X, launch the hook back
+	// If the lenght between them is greater than X, destroy the hook
 	if (DifferenceBetween.Size() >= DistanceBeforeReturn)
 	{
-		LaunchBackwards(bMovingBack);
+		this->Destroy();
+		Cast<AMainPlayer>(PlayerThatShoot)->bShooting = false;
 	}
 	
 	// If the hook is moving back to the player, check if the destroy criteria have been met
@@ -61,20 +62,6 @@ void AGrapplehook::LaunchForward() //Launches the hook forward
 	Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(LaunchVelocity, NAME_None, true);
 }
 
-void AGrapplehook::LaunchBackwards(bool &bMovingBack) //Launches the hook backwards
-{
-	if (bHitWall)
-	{
-		bHitWall = false;
-		CheckDestroy();
-	}
-	else
-	{
-		Cast<UPrimitiveComponent>(RootComponent)->AddImpulse(LaunchVelocity * -1, NAME_None, true);
-		bMovingBack = true;
-	}
-	CheckDestroy();
-}
 
 void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector NormalImpulse, const FHitResult & Hit)
 {
@@ -108,7 +95,6 @@ void AGrapplehook::OnHit(AActor * SelfActor, AActor * OtherActor, FVector Normal
 	{
 		bHitWall = true;
 		CheckDestroy(); //destroy
-		LaunchBackwards(bMovingBack);
 	}
 }
 
