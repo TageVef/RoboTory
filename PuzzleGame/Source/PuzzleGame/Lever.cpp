@@ -10,7 +10,8 @@ ALever::ALever()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	LeverMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LeverMesh"));
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("LeverMesh"));
+	CollisionBox->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned

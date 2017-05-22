@@ -29,7 +29,7 @@ public:
 private:
 
 	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* LeverMesh;
+		UBoxComponent* CollisionBox;
 	UPROPERTY(EditAnywhere)
 		AActor* WhatToActivate;
 	UPROPERTY(EditAnywhere)
